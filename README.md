@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# Road map
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Это учебный проект. Реализует взаимодействие с Firestore используя принципы CRUD
 
-## Available Scripts
+## Создаем проект используя Create React App
 
-In the project directory, you can run:
+  ### Если установлен npm 5.2.0+, лучше использовать npx
+  
+    npx create-react-app react_firestore_crud_260821
 
-### `npm start`
+  ###  Удаляем все файлы, которые точно не понадобятся в проекте
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Добавляем зависимости
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  ### DevDependencies
+  
+    npm i @babel/core eslint eslint-config-htmlacademy -DE
 
-### `npm test`
+  ### Dependencies
+  
+    npm i react-router-dom typescript firebase react-firebase-hooks node-sass
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Для корректной работы линтера создаем файлы
 
-### `npm run build`
+  ### .editorconfig .eslintrc.yml
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Импортируем BrowserRouter и оборачиваем App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  ### src/.index
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    import {BrowserRouter} from 'react-router-dom';
 
-### `npm run eject`
+    ReactDOM.render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+      document.getElementById(`root`)
+    );
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Настраиваем маршрутизатор
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ### src/utils/constants.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    export const TUTORIALS_ROUTE = `/tutorials`;
+    export const ADD_ROUTE = `/add`;
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ### src/utils/routes.js
 
-## Learn More
+    import {TUTORIALS_ROUTE, ADD_ROUTE} from './constants';
+    import TutorialsList from '../components/tutorials-list/tutorials-list';
+    import AddTutorial from '../components/add-tutorial/add-tutorial';
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    export const publicRoutes = [
+      {
+        title: `List`,
+        path: TUTORIALS_ROUTE,
+        Component: TutorialsList
+      },
+      {
+        title: `Add`,
+        path: ADD_ROUTE,
+        Component: AddTutorial
+      }
+    ];
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  ### src/components/app.jsx
 
-### Code Splitting
+    import {Switch, Route, Link, Redirect} from "react-router-dom";
+    import {publicRoutes} from '../../utils/routes';
+    import {TUTORIALS_ROUTE} from '../../utils/constants';
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    <div>
+      {publicRoutes.map(({path, title}) => (
+        <li key={path}>
+          <Link to={path}>{title}</Link>
+        </li>
+      ))}
+    </div>
 
-### Analyzing the Bundle Size
+    <div>
+      <Switch>
+        {publicRoutes.map(({path, Component}) => <Route key={path} path={path} component={Component} exact />)}
+        <Redirect to={TUTORIALS_ROUTE} />
+      </Switch>
+    </div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался или на TUTORIALS_ROUTE
