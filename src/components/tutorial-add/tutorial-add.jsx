@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import DataService from '../../services/data-service';
 import {Controls} from '../../utils/constants';
 
-const AddTutorial = () => {
+const TutorialAdd = () => {
 
   const initialTutorialState = {
     ...Object.fromEntries(Controls.map((item) => [item, ``])),
@@ -70,4 +70,4 @@ const AddTutorial = () => {
   );
 };
 
-export default AddTutorial;
+export default TutorialAdd;

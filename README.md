@@ -48,7 +48,7 @@
 
     import {TUTORIALS_ROUTE, ADD_ROUTE} from './constants';
     import TutorialsList from '../components/tutorials-list/tutorials-list';
-    import AddTutorial from '../components/add-tutorial/add-tutorial';
+    import TutorialAdd from '../components/add-tutorial/add-tutorial';
 
     export const publicRoutes = [
       {
@@ -59,7 +59,7 @@
       {
         title: `Add`,
         path: ADD_ROUTE,
-        Component: AddTutorial
+        Component: TutorialAdd
       }
     ];
 
@@ -157,7 +157,7 @@
 
     import {Controls} from '../../utils/constants';
 
-    const AddTutorial = () => {
+    const TutorialAdd = () => {
 
       const initialTutorialState = {
         ...Object.fromEntries(Controls.map((item) => [item, ``])),
@@ -190,6 +190,8 @@
         </div>
       );
     }
+
+    export default TutorialAdd;
 
   На основании массива Controls a) динамически заполняется initialTutorialState b) формируется jsx структура. На основании подобного паттерна можно создавать форму с любым количеством полей
 

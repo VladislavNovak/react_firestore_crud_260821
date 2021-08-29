@@ -1,6 +1,6 @@
 import {TUTORIALS_ROUTE, ADD_ROUTE} from './constants';
 import TutorialsList from '../components/tutorials-list/tutorials-list';
-import AddTutorial from '../components/add-tutorial/add-tutorial';
+import TutorialAdd from '../components/tutorial-add/tutorial-add';
 
 export const publicRoutes = [
   {
@@ -11,6 +11,6 @@ export const publicRoutes = [
   {
     title: `Add`,
     path: ADD_ROUTE,
-    Component: AddTutorial
+    Component: TutorialAdd
   }
 ];
