@@ -15,7 +15,7 @@ const update = (id, value) => {
 };
 
 const remove = (id) => {
-  return db.doc(id).delete;
+  return db.doc(id).delete();
 };
 
 const DataService = {

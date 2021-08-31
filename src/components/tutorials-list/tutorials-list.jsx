@@ -21,7 +21,7 @@ const TutorialsList = () => {
   };
 
   const renderIfCurrentTutorialTrue = () => (
-    <Tutorial tutorial={currentTutorial} refreshList={refreshList} />
+    <Tutorial currentTutorial={currentTutorial} refreshList={refreshList} />
   );
 
   const renderIfCurrentTutorialFalse = () => (

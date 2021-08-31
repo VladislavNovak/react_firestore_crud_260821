@@ -133,20 +133,20 @@
   ### Объединяем все CRUD операции в одном файле
   src/services/firebase.js
 
-    Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения
+  Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения
 
-      import firebase from "../utils/firebase";
+    import firebase from "../utils/firebase";
 
-      const db = firebase.collection(`/tutorials`);
+    const db = firebase.collection(`/tutorials`);
 
-      const getAll = () => db;
-      const create = (data) => db.add(data);
-      const update = (id, value) => db.doc(id).update(value);
-      const remove = (id) => db.doc(id).delete;
+    const getAll = () => db;
+    const create = (data) => db.add(data);
+    const update = (id, value) => db.doc(id).update(value);
+    const remove = (id) => db.doc(id).delete();
 
-      const DataService = {getAll, create, update, remove};
+    const DataService = {getAll, create, update, remove};
 
-      export default DataService;
+    export default DataService;
 
 ## Создаем страничку с функционалом добавления документа
 
@@ -229,11 +229,11 @@
   ### Получаем данные из firestore
   src/components/tutorial-list
 
-  Помимо jsx кода добавляем стейт tutorials. Он будет содержать массив всех документов (далее - коллекция) в firestore:
+  Помимо jsx кода добавляем стейт tutorials. Он будет содержать всю коллекцию (массив документов) из firestore:
 
     const [tutorials, setTutorials] = useState([]);
 
-  tutorials обновляется в useEffect. Здесь мы подписываемся на прослушивание события. При заверщении useEffect нужно отписаться от события, чтобы не происходила утечка памяти. Далее - событие onSnapshot реагирует на все изменения в коллекции получаемой с сервера. Когда они происходят, в onDataChange получаем коллекцию, извлекаем документы, перебираем их и сортируем (это необязательно, но это лучше для производительности):
+  tutorials обновляется в useEffect. Здесь мы подписываемся на прослушивание события. При заверщении useEffect нужно отписаться от события, чтобы не происходила утечка памяти. Далее - событие onSnapshot реагирует на все изменения в коллекции получаемой с сервера. Когда они происходят, в onDataChange получаем коллекцию, извлекаем документы, перебираем их и сортируем (посредством arrangeObjectProperties; это необязательно, но это лучше для производительности):
 
     const onDataChange = (snapshot) => {
       const data = snapshot.docs.map((item) => {
@@ -316,4 +316,88 @@
         ))}
       </ul>
     </div>
-  
+
+## Создаем страничку с документом
+
+  ### Передаем пропсы в компонент для отображения в jsx коде
+  src/components/tutorial
+
+  Ранее в TutorualList мы уже передали в компонент необходимые данные. Теперь же их извлечем:
+
+    const Tutorial = ({currentTutorial, refreshList}) => {}
+    export default Tutorial;
+
+  Далее - создаем стейт, в котором будем эти данные хранить. Напомню: используя конструкцию ...Object.fromEntries, мы можем добавлять в объект любое количество полей. Так как у нас поля основаны на данных из src/utils/constants, то и полей у нас будет лишь два - title и description:
+
+    const initialTutorialState = {
+      id: null,
+      ...Object.fromEntries(Controls.map((item) => [item, ``])),
+      published: false,
+    };
+
+    const [tutorial, setTutorial] = useState(initialTutorialState);
+
+    if (tutorial.id !== currentTutorial.id) {
+      setTutorial(currentTutorial);
+    }
+
+  ### Добавляем элементам формы управляемость
+  src/components/tutorial
+
+  Теперь весь код jsx формируется на основе данных из tutorial. Добавим им взаимодействие:
+
+    const handleInputChange = ({target: {name, value}}) => {
+      setTutorial({...tutorial, [name]: value});
+    };
+
+    <form>
+      {
+        Controls.map((control) => {
+          return (
+            <div key={control} >
+              <label htmlFor={control}>{control}</label>
+              <input
+                type="text"
+                name={control}
+                id={control}
+                value={tutorial[control]}
+                onChange={handleInputChange}
+                className="form-control"
+                required />
+            </div>
+          );
+        })}
+    </form>
+
+  ### Добавляем функционал: обновление конкретного поля, обновление всего документа, удаление документа
+  src/components/tutorial
+
+    import DataService from '../../services/data-service';
+
+    
+    const updatePublishedStatus = (status) => {
+      DataService.update(tutorial.id, {published: status})
+        .then(setTutorial({...tutorial, published: status}))
+    };
+
+    const updateTutorial = () => {
+      const data = extractProperty(tutorial);
+      DataService.update(tutorial.id, data)
+    };
+
+    const deleteTutorial = () => {
+      DataService.remove(tutorial.id)
+        .then(refreshList)
+    };
+
+    <button
+      className="btn btn-primary m-1"
+      onClick={() =>updatePublishedStatus(!tutorial.published)} >
+      {tutorial.published ? `UnPublish` : `Publish`}
+    </button>
+
+    <button onClick={deleteTutorial} className="btn btn-danger m-1">Delete</button>
+
+    <button onClick={updateTutorial} className="btn btn-success m-1">Update</button>
+
+  На этом основной функционал закончен. Нюансы можно найти в самом проекте

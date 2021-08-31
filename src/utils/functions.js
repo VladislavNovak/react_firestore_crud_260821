@@ -11,3 +11,7 @@ export const arrangeObjectProperties = (unordered) => {
 
   return ordered;
 };
+
+// Удаляет свойства id и published из объекта
+// eslint-disable-next-line no-unused-vars
+export const extractProperty = ({id, published, ...rest}) => rest;
