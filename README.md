@@ -173,8 +173,9 @@
     import {faVideo} from '@fortawesome/free-solid-svg-icons';
 
   ### Используем
+  В каждом конкретном файле, в котором будем использовать иконки
 
-    <FontAwesomeIcon icon={faVideo} /><
+    <FontAwesomeIcon icon={faVideo} />
 
 ## Подключаем firestore
 
