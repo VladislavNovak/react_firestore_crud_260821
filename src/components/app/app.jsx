@@ -1,5 +1,7 @@
 import React from 'react';
 import {Switch, Route, Redirect, NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCode} from '@fortawesome/free-solid-svg-icons';
 import {publicRoutes} from '../../utils/routes';
 import {TUTORIALS_ROUTE} from '../../utils/constants';
 
@@ -9,7 +11,7 @@ function App() {
       <nav id="navbar">
         <ul>
           <li>
-            <p>Valdix</p>
+            <p>Valdix <FontAwesomeIcon icon={faCode} className="navbar__logo" /></p>
           </li>
           {publicRoutes.map(({path, title}) => (
             <li key={path}>

@@ -20,6 +20,23 @@
   }
 }
 
+.navbar__logo {
+  color: white;
+  animation: blink-1 3s cubic-bezier(0.755, 0.050, 0.855, 0.060) infinite both;
+}
+
+@keyframes blink-1 {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
 .navbar__link {
   color: white;
   text-decoration: none;

@@ -120,11 +120,9 @@
 
 Это возможно сделать несколькими способами: а) подключая bootstrap б) используя styledComponents в) используя препроцессор scss. Нас интересует только последний вариант
 
-  ### Устанавливаем препроцессор
-
-  Использоваться он будет в Dependencies
+  ### Устанавливаем препроцессор в Dependencies
   
-    npm i node-sass
+    npm i --save node-sass
 
   ### Настраиваем папки и пути
 
@@ -157,7 +155,26 @@
 
 Не забываем о том, что сам src/assets/sass/fonts.scss нужно подключить к src/assets/sass/style.scss (если ранее мы этого не сделали)
 
-  @import "./fonts.scss";
+    @import "./fonts.scss";
+
+## Подключаем fontAwesome
+
+  ### Инсталируем в Dependencies 
+
+    npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
+  У иконок есть различное начертание: solid, brands. Чуть выше мы инсталировали только первое из них. Если понадобятся остальные, нужно и их установить
+
+    npm i --save @fortawesome/free-brands-svg-icons
+
+  ### Подключаем в приложение
+
+    import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+    import {faVideo} from '@fortawesome/free-solid-svg-icons';
+
+  ### Используем
+
+    <FontAwesomeIcon icon={faVideo} /><
 
 ## Подключаем firestore
 
