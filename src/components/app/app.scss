@@ -1,0 +1,52 @@
+
+#navbar {
+  width: 100vw;
+  font-weight: bold;
+  background-color: $navbar-bg;
+
+  ul {
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1em 0;
+
+    li:first-child {
+      margin-right: auto;
+      margin-left: 3em;
+      color: $main-red;
+    }
+  }
+}
+
+.navbar__link {
+  color: white;
+  text-decoration: none;
+  padding-right: 5em;
+  position: relative;
+  transition: all ease-in-out 550ms;
+
+  &::after {
+    content: "";
+    position: absolute;
+    display: block;
+    height: 0.4em;
+    width: 0%;
+    background-color: $pink;
+    bottom: -1em;
+    transition: all ease-in-out 250ms;
+  }
+
+  &:hover::after {
+    width:60%;
+  }
+
+  &:hover{
+    color: $pink;
+  }
+}
+
+.navbar__link--selected {
+  color: $pink;
+}

@@ -42,46 +42,64 @@
   ### Перечисляем в константах все возможные пути
   src/utils/constants.js
 
-    export const TUTORIALS_ROUTE = `/tutorials`;
     export const ADD_ROUTE = `/add`;
+    export const MORE_ROUTE = `/more`;
+    export const TUTORIALS_ROUTE = `/tutorials`;
 
   ### Описываем все пути в массиве объектов
   src/utils/routes.js
 
-    import {TUTORIALS_ROUTE, ADD_ROUTE} from './constants';
-    import TutorialsList from '../components/tutorials-list/tutorials-list';
+    import {TUTORIALS_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
     import TutorialAdd from '../components/tutorial-add/tutorial-add';
+    import More from '../components/more/more';
+    import TutorialsList from '../components/tutorials-list/tutorials-list';
 
     export const publicRoutes = [
+      {
+        title: `Add`,
+        path: ADD_ROUTE,
+        Component: TutorialAdd
+      },
       {
         title: `List`,
         path: TUTORIALS_ROUTE,
         Component: TutorialsList
       },
       {
-        title: `Add`,
-        path: ADD_ROUTE,
-        Component: TutorialAdd
+        title: `More`,
+        path: MORE_ROUTE,
+        Component: More
       }
     ];
 
   ### Подключаем пути
   src/components/app.jsx
 
-    import {Switch, Route, Link, Redirect} from "react-router-dom";
+  Для этого импортируем NavLink. В отличии от Link он позволяет воспользоваться стилизацией для выделения активной ссылки и включает в себя а) activeClassName, значение которого просто добавляется к стилизации, и б) activeStyle, который используется в качестве встроенной стилизации (activeStyle={{color: "green", fontWeight: "bold"}})
+
+    import {Switch, Route, Redirect, NavLink} from "react-router-dom";
     import {publicRoutes} from '../../utils/routes';
     import {TUTORIALS_ROUTE} from '../../utils/constants';
 
     function App() {
       return (
         <div>
-          <div>
-            {publicRoutes.map(({path, title}) => (
-              <li key={path}>
-                <Link to={path}>{title}</Link>
+          <nav id="navbar">
+            <ul>
+              <li>
+                <p>Valdix</p>
               </li>
-            ))}
-          </div>
+              {publicRoutes.map(({path, title}) => (
+                <li key={path}>
+                  <NavLink to={path}
+                    className="navbar__link"
+                    activeClassName="navbar__link--selected">
+                    {title}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div>
             <Switch>
@@ -96,15 +114,51 @@
 
     export default App;
 
-  Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался или на TUTORIALS_ROUTE
+  Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался или на TUTORIALS_ROUTE.
 
-## Подключаем bootstrap
+## Подключаем стили
 
-  ### Устанавливаем в приложение и импортируем стили
+Это возможно сделать несколькими способами: а) подключая bootstrap б) используя styledComponents в) используя препроцессор scss. Нас интересует только последний вариант
 
-    npm install bootstrap
+  ### Устанавливаем препроцессор
 
-    import "bootstrap/dist/css/bootstrap.min.css";
+  Использоваться он будет в Dependencies
+  
+    npm i node-sass
+
+  ### Настраиваем папки и пути
+
+  Создаем папку sass по адресу src/assets/sass. Далее файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о., к примеру, в папке tutorial-add будет находится одновременно два файла - tutorial-add.jsx и tutorial-add.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
+
+    @import "./fonts.scss";
+    @import "./common.scss";
+    @import "./variables.scss";
+
+    @import "../../components/app/app.scss";
+    @import "../../components/tutorial-add/tutorial-add.scss";
+
+  ### Подключаем препроцессор к приложению
+  src/index.js
+
+    import './assets/sass/style.scss';
+
+## Подключаем шрифты
+
+Скачиваем необходимые шрифты и кладем их в новую папку по пути src/assets/fonts. Теперь можно в файл src/assets/sass/fonts.scss их экспортировать
+
+  /* Marck Script */
+  @font-face {
+    font-family: "MarckScript";
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src:
+      url("../fonts/MarckScript-Regular.ttf") format("truetype");
+  }
+
+Не забываем о том, что сам src/assets/sass/fonts.scss нужно подключить к src/assets/sass/style.scss (если ранее мы этого не сделали)
+
+  @import "./fonts.scss";
 
 ## Подключаем firestore
 

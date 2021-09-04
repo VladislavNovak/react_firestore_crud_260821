@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import DataService from '../../services/data-service';
 import {Controls} from '../../utils/constants';
+import {capFirstLetter} from '../../utils/functions';
 
 const TutorialAdd = () => {
 
@@ -36,8 +37,8 @@ const TutorialAdd = () => {
 
   const renderIfSubmittedTrue = () => (
     <div>
-      <h4>You submitted successfully!</h4>
-      <button onClick={newTutorial} className="btn btn-success">Add</button>
+      <p className="form__warning">The task was <span>successfully saved</span> on the server!</p>
+      <button onClick={newTutorial} className="form__btn-add">create next</button>
     </div>
   );
 
@@ -45,26 +46,28 @@ const TutorialAdd = () => {
     <div>{
       Controls.map((control) => {
         return (
-          <div className="form-group" key={control} >
-            <label htmlFor={control}>{control}</label>
+          <div className="form__group" key={control} >
+            <label className="form__label" htmlFor={control}>{capFirstLetter(control)}</label>
             <input
               type="text"
               name={control}
               id={control}
               value={tutorial[control]}
               onChange={handleInputChange}
-              className="form-control"
+              className="form__control"
+              autoComplete="off"
               required />
           </div>
         );
       })}
 
-    <button onClick={saveTutorial} className="btn btn-success mt-3">Submit</button>
+    <button onClick={saveTutorial} className="form__btn-save">Save</button>
     </div>
   );
 
   return (
     <div className="submit-form">
+      <h1 className="submit-form__title">Add <span>NEW</span> task</h1>
       {submitted ? renderIfSubmittedTrue() : renderIfSubmittedFalse()}
     </div>
   );

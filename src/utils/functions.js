@@ -15,3 +15,6 @@ export const arrangeObjectProperties = (unordered) => {
 // Удаляет свойства id и published из объекта
 // eslint-disable-next-line no-unused-vars
 export const extractProperty = ({id, published, ...rest}) => rest;
+
+// Получает слово и возвращает это же слова с заглавной первой буквой
+export const capFirstLetter = (item) => (typeof item !== `string`) ? item : item[0].toUpperCase() + item.slice(1);
