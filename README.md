@@ -128,13 +128,12 @@
 
   ### Настраиваем папки и пути
 
-  Создаем папку sass по адресу src/assets/sass. Далее файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о., к примеру, в папке tutorial-add будет находится одновременно два файла - tutorial-add.jsx и tutorial-add.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
+  Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке tutorial-add будет находится одновременно два файла - tutorial-add/tutorial-add.jsx и tutorial-add/tutorial-add.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
 
     @import "./fonts.scss";
     @import "./common.scss";
     @import "./variables.scss";
 
-    @import "../../components/app/app.scss";
     @import "../../components/tutorial-add/tutorial-add.scss";
 
   ### Подключаем препроцессор к приложению
@@ -146,15 +145,15 @@
 
 Скачиваем необходимые шрифты и кладем их в новую папку по пути src/assets/fonts. Теперь можно в файл src/assets/sass/fonts.scss их экспортировать
 
-  /* Marck Script */
-  @font-face {
-    font-family: "MarckScript";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src:
-      url("../fonts/MarckScript-Regular.ttf") format("truetype");
-  }
+    /* Marck Script */
+    @font-face {
+      font-family: "MarckScript";
+      font-style: normal;
+      font-weight: normal;
+      font-display: swap;
+      src:
+        url("../fonts/MarckScript-Regular.ttf") format("truetype");
+    }
 
 Не забываем о том, что сам src/assets/sass/fonts.scss нужно подключить к src/assets/sass/style.scss (если ранее мы этого не сделали)
 
