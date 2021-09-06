@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
+import {EnterGroup} from '..';
 import DataService from '../../services/data-service';
 import {Controls} from '../../utils/constants';
-import {capFirstLetter} from '../../utils/functions';
 
 const TutorialAdd = () => {
 
@@ -43,25 +43,16 @@ const TutorialAdd = () => {
   );
 
   const renderIfSubmittedFalse = () => (
-    <div>{
-      Controls.map((control) => {
-        return (
-          <div className="form__group" key={control} >
-            <label className="form__label" htmlFor={control}>{capFirstLetter(control)}</label>
-            <input
-              type="text"
-              name={control}
-              id={control}
-              value={tutorial[control]}
-              onChange={handleInputChange}
-              className="form__control"
-              autoComplete="off"
-              required />
-          </div>
-        );
-      })}
+    <div>
+      {Controls.map((control) => (
+        <EnterGroup
+          key={control}
+          control={control}
+          tutorial={tutorial}
+          handleInputChange={handleInputChange} />
+      ))}
 
-    <button onClick={saveTutorial} className="form__btn-save">Save</button>
+      <button onClick={saveTutorial} className="form__btn-save">Save</button>
     </div>
   );
 

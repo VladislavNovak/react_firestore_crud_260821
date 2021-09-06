@@ -1,0 +1,51 @@
+.enter-group {
+  position: relative;
+}
+
+.enter-group__label {
+  position: absolute;
+  top: 0.3em;
+  left: 1em;
+
+  display: block;
+
+  font-weight: bold;
+  font-size: 1em;
+
+  color: $main-red;
+
+  transition: all 0.3s ease;
+
+  &.active {
+    top: -1.2em;
+  }
+}
+
+.enter-group__control {
+  width: 92%;
+  height: 1.5em;
+  margin-bottom: 2.2em;
+  padding: 1px 1em;
+
+  font-family: NeuchaRegular;
+  font-weight: 500;
+  font-size: 1em;
+
+  border: 0;
+  border-bottom: 1px solid $main-red;
+  background: none;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.enter-group__warning {
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.2em;
+
+  & span {
+    color: $main-red;
+  }
+}

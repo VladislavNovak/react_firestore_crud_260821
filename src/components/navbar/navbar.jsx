@@ -55,7 +55,7 @@ const Navbar = () => {
         ))}
       </ul>
       <div className="navbar__toggle" onClick={handleClick}>
-        <FontAwesomeIcon icon={isClicked ? faBars : faTimes} />
+        <FontAwesomeIcon icon={isClicked ? faTimes : faBars} />
       </div>
     </nav>
   );

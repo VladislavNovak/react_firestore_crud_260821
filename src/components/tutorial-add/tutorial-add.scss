@@ -11,40 +11,6 @@
 
 .submit-form__title {
   text-align: right;
-  & span {
-    color: $main-red;
-  }
-}
-
-.form__label {
-  display: block;
-  color: $main-red;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form__control {
-  width: 100%;
-  height: 25px;
-  margin-bottom: 20px;
-
-  font-family: NeuchaRegular;
-  font-weight: 500;
-  font-size: 1.1em;
-
-  border: 0;
-  border-bottom: 1px solid $main-red;
-  background: none;
-
-  &:focus {
-    outline: 0;
-  }
-}
-
-.form__warning {
-  text-align: center;
-  font-weight: 500;
-  font-size: 1.2em;
 
   & span {
     color: $main-red;

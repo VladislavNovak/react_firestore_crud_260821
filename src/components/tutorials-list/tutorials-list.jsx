@@ -32,17 +32,17 @@ const TutorialsList = () => {
   );
 
   return (
-    <div className="list row">
-      <div className="col-md-6">
-        <h4>Tutorial List</h4>
+    <div className="affairs">
+      <h1 className="affairs__title">Task <span>LIST</span></h1>
+      <div className="affairs__list-wrap">
         {error && <strong>Error: {error}</strong>}
         {loading && <span>Loading...</span>}
-        <ul className="list-group">
+        <ul className="affairs__list">
           { !loading && tutorials && tutorials.docs.map((tutorial, index) => (
             <li
               key={tutorial.id}
               onClick={() => setActiveTutorial(tutorial, index)}
-              className={`list-group-item ` + (index === currentIndex ? `active` : ``)}>
+              className={`affairs__item ` + (index === currentIndex ? `active` : ``)}>
               {tutorial.data().title}
             </li>
           ))}
