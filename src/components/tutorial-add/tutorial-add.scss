@@ -10,7 +10,7 @@
 }
 
 .submit-form__title {
-  text-align: right;
+  text-align: center;
 
   & span {
     color: $main-red;
@@ -29,6 +29,21 @@
   font-size: 1.2em;
   color: white;
 
-  background-color: $main-red;
-  border: 1px solid $main-red;
+  background-color: $main-red-light;
+  border: 1px solid $main-red-light;
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    background: $main-red;
+    border-color: $main-red;
+    box-shadow: 2px 2px 8px 0px rgba(225, 65, 20, 0.2);
+
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: translate(0, 0);
+    background: $main-red-dark;
+    border-color: $main-red-dark;
+  }
 }
