@@ -1,4 +1,4 @@
-.affairs__details {
+.detail {
   position: absolute;
   top: 0;
   right: 0;
@@ -9,8 +9,14 @@
 
   border-radius: 5px;
   border: 1px solid $main-red;
-  background-color: $detail-bg;
+  background-color: #f5f0e1;
   box-shadow: 7px 7px 8px 0px grey;
+
+  transition: all ease-in-out 250ms;
+
+  &.published {
+    background-color: #effdea;
+  }
 }
 
 .detail__title {
@@ -21,10 +27,6 @@
 
     font-size: 1.3em;
   }
-}
-
-.detail__icon {
-  color: $main-red;
 }
 
 .detail__group {
@@ -119,10 +121,6 @@
     background: $main-red-dark;
     border-color: $main-red-dark;
   }
-}
-
-.affairs__warning {
-  text-align: center;
 }
 
 @media screen and (max-width: 768px){

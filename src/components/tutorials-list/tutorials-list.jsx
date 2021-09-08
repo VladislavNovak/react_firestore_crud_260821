@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useCollection} from "react-firebase-hooks/firestore";
 import DataService from '../../services/data-service.js';
 import Detail from '../detail/detail.jsx';
+import {faShare} from '@fortawesome/free-solid-svg-icons';
 
 // ----------------------------------------------------------------------------------
 
@@ -27,7 +29,10 @@ const TutorialsList = () => {
   );
 
   const renderIfCurrentTutorialFalse = () => (
-    <p className="affairs__warning">Please click on a Task...</p>
+    <div className="affairs__warning">
+      <span>Please click on a Task...</span>
+      <FontAwesomeIcon icon={faShare} className="affairs__warning-icon fa-rotate-180" />
+    </div>
   );
 
   return (
@@ -48,9 +53,7 @@ const TutorialsList = () => {
           ))}
         </ul>
       </div>
-      <div className="affairs__details">
-        {currentTutorial ? renderIfCurrentTutorialTrue() : renderIfCurrentTutorialFalse()}
-      </div>
+      {currentTutorial ? renderIfCurrentTutorialTrue() : renderIfCurrentTutorialFalse()}
     </div>
   );
 };
