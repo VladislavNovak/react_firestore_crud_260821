@@ -1,4 +1,7 @@
 .about {
+  display: flex;
+  justify-content: space-between;
+
   width: 60%;
   margin: 60px auto;
   padding: 5px 30px 30px 20px;
@@ -7,11 +10,19 @@
   border: 1px solid $main-red;
   background-color: #F7F7F7;
   box-shadow: 7px 7px 8px 0px grey;
+}
+
+.about__left {
+  width: 36%;
+}
+
+.about__right {
+  width: 60%;
 
   & P {
     font-family: NeuchaRegular;
     font-weight: 500;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   & strong {
@@ -20,7 +31,6 @@
 }
 
 .about__title {
-  flex: 1 100%;
   text-align: center;
 
   & span {

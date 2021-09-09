@@ -4,6 +4,8 @@ import {publicRoutes} from '../../utils/routes';
 import {TUTORIALS_ROUTE} from '../../utils/constants';
 import {Navbar} from '..';
 
+import '../../utils/fontawesome.js';
+
 function App() {
   return (
     <div>

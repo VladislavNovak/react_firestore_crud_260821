@@ -161,21 +161,44 @@
 
   ### Инсталируем в Dependencies 
 
-    npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+    npm i -S @fortawesome/fontawesome-svg-core @fortawesome/react-fontawesome @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
 
-  У иконок есть различное начертание: solid, brands. Чуть выше мы инсталировали только первое из них. Если понадобятся остальные, нужно и их установить
+  ### Создаем библиотеку
+  src/utils/fontawesome.js
 
-    npm i --save @fortawesome/free-brands-svg-icons
+    import {library} from '@fortawesome/fontawesome-svg-core';
 
-  ### Подключаем в приложение
+    import {
+      faStar as farStarRegular,
+    } from '@fortawesome/free-regular-svg-icons';
 
+    import {
+      faCoffee,
+      faStar as fasStarSolid,
+    } from '@fortawesome/free-solid-svg-icons';
+
+    library.add(faCoffee, farStarRegular, fasStarSolid);
+
+  В данном случае, поскольку наименования faStar и в стилях regular, и в solid совпадают, мы воспользовались псевдонимами.
+
+  ### Импортируем в приложение
+  src/components/app/app.jsx
+
+    import '../../utils/fontawesome.js';
+
+  ### Используем в каждом конкретном файле, в котором будут иконки
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-    import {faVideo} from '@fortawesome/free-solid-svg-icons';
 
-  ### Используем
-  В каждом конкретном файле, в котором будем использовать иконки
+    <FontAwesomeIcon icon={[`far`, `star`]} />
+    <FontAwesomeIcon icon={[`fas`, `star`]} />
+    <FontAwesomeIcon icon="faCoffee" />
 
-    <FontAwesomeIcon icon={faVideo} />
+  Но, конечно, подключить иконку можно и напрямую, без использовани библиотеки. В этом случае весь импорт и использованиев каждом конкретном файле будут выглядеть так:
+    
+    import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+    import {faCoffee} from '@fortawesome/free-solid-svg-icons';
+
+    <FontAwesomeIcon icon={faCoffee} />
 
 ## Подключаем firestore
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faBars, faCode, faTimes} from '@fortawesome/free-solid-svg-icons';
 
 import {publicRoutes} from '../../utils/routes';
 import {KeyCode} from '../../utils/constants';
@@ -40,7 +39,7 @@ const Navbar = () => {
     <nav className="navbar" onClick={(evt) => evt.stopPropagation()} >
       <p className="navbar__legend">
         <span>Valdix</span>
-        <FontAwesomeIcon icon={faCode} className="navbar__icon" />
+        <FontAwesomeIcon icon="code" className="navbar__icon" />
       </p>
       <ul className={isClicked ? `navbar__list active` : `navbar__list`} ref={listRef}>
         {publicRoutes.map(({path, title}) => (
@@ -55,7 +54,7 @@ const Navbar = () => {
         ))}
       </ul>
       <div className="navbar__toggle" onClick={handleClick}>
-        <FontAwesomeIcon icon={isClicked ? faTimes : faBars} />
+        <FontAwesomeIcon icon={isClicked ? `times` : `bars`} />
       </div>
     </nav>
   );

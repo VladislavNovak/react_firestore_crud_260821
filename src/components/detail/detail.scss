@@ -69,22 +69,25 @@
   margin: 0 0 1em 0;
 
   & strong {
-    padding: 0.6em 0.4em 0.6em 0.4em;
+    padding: 0.6em 0.6em 0.6em 0.4em;
   }
 
   & span {
     font-family: NeuchaRegular;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1em;
+    color: rgb(41, 182, 41);
   }
 }
 
 .detail__distinguish-icon {
   margin-right: auto;
-  color: $main-red-dark;
+
+  font-size: 1.1em;
+  color: $main-red;
 
   &.active {
-    color: green;
+    color: rgb(41, 182, 41);
   }
 }
 
@@ -96,7 +99,7 @@
 .details__btn-highlight,
 .details__btn-delete,
 .details__btn-update {
-  min-width: 5em;
+  min-width: 4em;
   padding: 7px;
 
   border-radius: 3px;
