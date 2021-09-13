@@ -1,10 +1,28 @@
 import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+import firebasePicture from '../../assets/pic/Built_with_Firebase_Logo_Light.png';
 
 const More = () => {
   return (
     <div className="about">
       <div className="about__left">
         <p>Skills:</p>
+        <ul className="about__skills-list">
+          <li className="about__skills-item">
+            <FontAwesomeIcon icon={[`fab`, `react`]} />
+          </li>
+          <li className="about__skills-item">
+            <FontAwesomeIcon icon={[`fab`, `js-square`]} />
+          </li>
+          <li className="about__skills-item">
+            <FontAwesomeIcon icon={[`fab`, `git`]} />
+          </li>
+          <li className="about__skills-item">
+            <FontAwesomeIcon icon={[`fab`, `sass`]} />
+          </li>
+        </ul>
+        <img className="about__firebase-picture" src={firebasePicture} />
       </div>
       <div className="about__right">
         <h1 className="about__title">About <span>AND</span> more</h1>

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useCollection} from "react-firebase-hooks/firestore";
@@ -24,6 +25,23 @@ const TutorialsList = () => {
     setCurrentIndex(-1);
   };
 
+  const renderIfTutorialsExist = () => (
+    <ul className="affairs__list">
+      { !loading && tutorials && tutorials.docs.map((tutorial, index) => (
+        <li
+          key={tutorial.id}
+          onClick={() => setActiveTutorial(tutorial, index)}
+          className={`affairs__item ` + (index === currentIndex ? `active` : ``)}>
+          {tutorial.data().title}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const renderIfTutorialsNotExist = (arg) => (
+    <div className ="affairs__notexist">{arg}</div>
+  );
+
   const renderIfCurrentTutorialTrue = () => (
     <Detail currentTutorial={currentTutorial} refreshList={refreshList} />
   );
@@ -37,21 +55,11 @@ const TutorialsList = () => {
 
   return (
     <div className="affairs">
-      <h1 className="affairs__title">Saved <span>TASK</span> list
-      </h1>
+      <h1 className="affairs__title">Saved <span>TASK</span> list</h1>
       <div className="affairs__list-wrap">
         {error && <strong>Error: {error}</strong>}
-        {loading && <span>Loading...</span>}
-        <ul className="affairs__list">
-          { !loading && tutorials && tutorials.docs.map((tutorial, index) => (
-            <li
-              key={tutorial.id}
-              onClick={() => setActiveTutorial(tutorial, index)}
-              className={`affairs__item ` + (index === currentIndex ? `active` : ``)}>
-              {tutorial.data().title}
-            </li>
-          ))}
-        </ul>
+        {loading && renderIfTutorialsNotExist(`Loading...`)}
+        {tutorials && tutorials.docs.length ? renderIfTutorialsExist() : renderIfTutorialsNotExist(`Create a new entry!`)}
       </div>
       {currentTutorial ? renderIfCurrentTutorialTrue() : renderIfCurrentTutorialFalse()}
     </div>

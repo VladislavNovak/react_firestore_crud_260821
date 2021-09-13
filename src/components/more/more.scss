@@ -13,6 +13,10 @@
 }
 
 .about__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   width: 36%;
 }
 
@@ -36,4 +40,23 @@
   & span {
     color: $main-red;
   }
+}
+
+.about__firebase-picture {
+  width: 100%;
+}
+
+.about__skills-list {
+  display: flex;
+  justify-content: space-around;
+
+  margin: 0 0 2em 0;
+  padding: 0;
+  list-style-type: none;
+
+  color: $main-red;
+}
+
+.about__skills-item {
+  font-size: 2em;
 }

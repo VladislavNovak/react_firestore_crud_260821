@@ -1,4 +1,9 @@
 import {library} from '@fortawesome/fontawesome-svg-core';
+import {
+  faGit,
+  faJsSquare,
+  faReact,
+  faSass} from '@fortawesome/free-brands-svg-icons';
 
 import {
   faCheckSquare as faCheckSquareRegular,
@@ -15,6 +20,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+    faSass,
+    faGit,
+    faJsSquare,
+    faReact,
     faBars,
     faCode,
     faTimes,
