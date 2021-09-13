@@ -7,6 +7,7 @@ import {
 
 import {
   faCheckSquare as faCheckSquareRegular,
+  faHeart as faHeartRegular,
   faSave,
   faStar as faStarRegular, faTrashAlt,
 } from '@fortawesome/free-regular-svg-icons';
@@ -16,6 +17,7 @@ import {
   faCode,
   faTimes,
   faCheckSquare as faCheckSquareSolid,
+  faHeart as faHeartSolid,
   faStar as faStarSolid,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -29,6 +31,8 @@ library.add(
     faTimes,
     faCheckSquareRegular,
     faCheckSquareSolid,
+    faHeartRegular,
+    faHeartSolid,
     faSave,
     faTrashAlt,
     faStarSolid,

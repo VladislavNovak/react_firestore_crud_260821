@@ -7,11 +7,6 @@
   min-height: 370px;
   padding: 0 20px 20px 20px;
 
-  border-radius: 5px;
-  border: 1px solid $main-red;
-  background-color: #f5f0e1;
-  box-shadow: 7px 7px 8px 0px grey;
-
   transition: all ease-in-out 250ms;
 
   &.published {
@@ -66,7 +61,7 @@
   align-items: center;
 
   width: 96%;
-  margin: 0 0 1em 0;
+  margin: 0 0 2em 0;
 
   & strong {
     padding: 0.6em 0.6em 0.6em 0.4em;
@@ -76,66 +71,39 @@
     font-family: NeuchaRegular;
     font-weight: 600;
     font-size: 1em;
-    color: rgb(41, 182, 41);
+    color: $detail-green;
   }
 }
 
 .detail__distinguish-icon {
   margin-right: auto;
 
-  font-size: 1.1em;
+  font-size: 1.3em;
   color: $main-red;
 
   &.active {
-    color: rgb(41, 182, 41);
+    color: $detail-green;
   }
 }
 
 .detail__buttons {
   display: flex;
   justify-content: space-between;
-}
 
-.details__btn-highlight,
-.details__btn-delete,
-.details__btn-update {
-  min-width: 4em;
-  padding: 7px;
-
-  border-radius: 3px;
-  font-weight: 500;
-  font-size: 1.2em;
-  color: white;
-
-  background-color: $main-red-light;
-  border: 1px solid $main-red-light;
-
-  &:hover {
-    transform: translate(-1px, -1px);
-    background: $main-red;
-    border-color: $main-red;
-    box-shadow: 2px 2px 8px 0px rgba(221, 65, 22, 0.4);
-
-    cursor: pointer;
-  }
-
-  &:active {
-    transform: translate(0, 0);
-    background: $main-red-dark;
-    border-color: $main-red-dark;
+  &-btns {
+    min-width: 4em;
+    padding: 7px;
   }
 }
 
 @media screen and (max-width: 768px){
 
-  .affairs__details {
+  .detail {
     transform: translate(25%, 25%);
   }
 
-  .details__btn-highlight,
-  .details__btn-delete,
-  .details__btn-update {
-    min-width: 3.5em;
+  .detail__buttons-btns {
+    min-width: 3em;
     font-size: 1em;
   }
 }

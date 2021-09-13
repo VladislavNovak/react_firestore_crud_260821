@@ -75,7 +75,7 @@ const Detail = ({currentTutorial, refreshList}) => {
   };
 
   const renderForm = () => (
-    <div className={tutorial.published ? `detail published` : `detail`}>
+    <div className={tutorial.published ? `form detail published` : `form detail`}>
       <h4 className="detail__title">
         <span>Detailed info</span>
       </h4>
@@ -102,9 +102,9 @@ const Detail = ({currentTutorial, refreshList}) => {
           })}
 
         <label className="detail__distinguish-label">
-          <strong>System service: </strong>
+          <strong>Favourite: </strong>
           <FontAwesomeIcon
-            icon={tutorial.published ? [`fas`, `check-square`] : [`far`, `check-square`]}
+            icon={tutorial.published ? [`fas`, `heart`] : [`far`, `heart`]}
             className={`detail__distinguish-icon ${tutorial.published && `active`}`} />
           <span>{message}</span>
         </label>
@@ -112,16 +112,17 @@ const Detail = ({currentTutorial, refreshList}) => {
 
       <div className="detail__buttons">
         <button
-          className="details__btn-highlight"
-          onClick={() =>updatePublishedStatus(!tutorial.published)} >
+          className="detail__buttons-btns"
+          onClick={() =>updatePublishedStatus(!tutorial.published)}
+          title="Add to favourites" >
           <FontAwesomeIcon icon={tutorial.published ? [`fas`, `star`] : [`far`, `star`]} />
         </button>
 
-        <button onClick={deleteTutorial} className="details__btn-delete">
+        <button onClick={deleteTutorial} className="detail__buttons-btns" title="Delete task">
           <FontAwesomeIcon icon={[`far`, `trash-alt`]} />
         </button>
 
-        <button onClick={updateTutorial} className="details__btn-update">
+        <button onClick={updateTutorial} className="detail__buttons-btns" title="Update task">
           <FontAwesomeIcon icon={[`far`, `save`]} />
         </button>
 

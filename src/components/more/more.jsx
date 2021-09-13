@@ -5,9 +5,8 @@ import firebasePicture from '../../assets/pic/Built_with_Firebase_Logo_Light.png
 
 const More = () => {
   return (
-    <div className="about">
+    <div className="form about">
       <div className="about__left">
-        <p>Skills:</p>
         <ul className="about__skills-list">
           <li className="about__skills-item">
             <FontAwesomeIcon icon={[`fab`, `react`]} />

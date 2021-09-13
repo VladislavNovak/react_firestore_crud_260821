@@ -5,3 +5,65 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.form {
+  border-radius: 5px;
+  border: 1px solid $main-red;
+  background-color: #F7F7F7;
+  box-shadow: 7px 7px 8px 0px grey;
+}
+
+h1 {
+  color: $navbar-bg;
+
+  & span {
+    color: $main-red;
+  }
+}
+
+button,
+.item-like-button {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: white;
+
+  border-radius: 3px;
+  background-color: $main-red;
+  border: 1px solid $main-red;
+
+  cursor: pointer;
+  word-wrap: break-word;
+  user-select: none;
+
+  transition: all ease 150ms;
+
+  &:hover {
+    background: $main-red;
+    border-color: $main-red;
+    box-shadow: 1px 1px 3px 1px grey;
+  }
+
+  &:active {
+    background: $main-red-dark;
+    border-color: $main-red-dark;
+  }
+
+  &:disabled {
+    background: $navbar-bg;
+    border-color: $navbar-bg;
+
+    box-shadow: none;
+
+    cursor: not-allowed;
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
