@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -40,14 +41,14 @@ const Detail = ({currentTutorial, refreshList}) => {
     setTutorial({...tutorial, [name]: value});
   };
 
-  const updatePublishedStatus = (status) => {
+  const updatePublishedStatus = () => {
+    let status = !tutorial.published;
     DataService.update(tutorial.id, {published: status})
       .then(() => {
         setTutorial({...tutorial, published: status});
         setMessage(`Was updated succesfully!`);
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
         console.log(`Error: `, error);
       });
   };
@@ -60,7 +61,6 @@ const Detail = ({currentTutorial, refreshList}) => {
         setMessage(`Was updated succesfully!`);
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
         console.log(`Error: `, error);
       });
   };
@@ -69,7 +69,6 @@ const Detail = ({currentTutorial, refreshList}) => {
     DataService.remove(tutorial.id)
       .then(refreshList)
       .catch((error) => {
-        // eslint-disable-next-line no-console
         console.log(`Error: `, error);
       });
   };
@@ -92,10 +91,11 @@ const Detail = ({currentTutorial, refreshList}) => {
                 <textarea
                   name={control}
                   id={control}
-                  className="detail__textarea"
+                  className={tutorial.published ? `detail__textarea published` : `detail__textarea`}
                   value={tutorial[control]}
                   onChange={handleInputChange}
                   placeholder="Enter your description"
+                  title="Edit and then save changes"
                   required />
               </div>
             );
@@ -113,16 +113,23 @@ const Detail = ({currentTutorial, refreshList}) => {
       <div className="detail__buttons">
         <button
           className="detail__buttons-btns"
-          onClick={() =>updatePublishedStatus(!tutorial.published)}
-          title="Add to favourites" >
+          onClick={updatePublishedStatus}
+          name="update"
+          title="Add task to favourites" >
           <FontAwesomeIcon icon={tutorial.published ? [`fas`, `star`] : [`far`, `star`]} />
         </button>
 
-        <button onClick={deleteTutorial} className="detail__buttons-btns" title="Delete task">
+        <button
+          className="detail__buttons-btns"
+          onClick={deleteTutorial}
+          title="Delete task">
           <FontAwesomeIcon icon={[`far`, `trash-alt`]} />
         </button>
 
-        <button onClick={updateTutorial} className="detail__buttons-btns" title="Update task">
+        <button
+          className="detail__buttons-btns"
+          onClick={updateTutorial}
+          title="Update task">
           <FontAwesomeIcon icon={[`far`, `save`]} />
         </button>
 

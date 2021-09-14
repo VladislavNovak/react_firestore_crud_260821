@@ -1,6 +1,6 @@
 .detail {
   position: absolute;
-  top: 0;
+  top: -15px;
   right: 0;
   transform: translate(20%, 25%);
   width: 55%;
@@ -10,7 +10,9 @@
   transition: all ease-in-out 250ms;
 
   &.published {
-    background-color: #effdea;
+    color: white;
+    background-color: $navbar-bg;
+    border-color: $navbar-bg;
   }
 }
 
@@ -54,6 +56,11 @@
   border: 1px solid $main-red;
   background: none;
   outline: none;
+
+  &.published {
+    color: white;
+    border: 1px solid white;
+  }
 }
 
 .detail__distinguish-label {
@@ -71,7 +78,7 @@
     font-family: NeuchaRegular;
     font-weight: 600;
     font-size: 1em;
-    color: $detail-green;
+    color: $main-red;
   }
 }
 
@@ -82,7 +89,7 @@
   color: $main-red;
 
   &.active {
-    color: $detail-green;
+    color: $main-red;
   }
 }
 
