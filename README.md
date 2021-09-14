@@ -20,9 +20,103 @@
   
     npm i react-router-dom typescript firebase react-firebase-hooks node-sass
 
-## Для корректной работы линтера создаем файлы
+## Для корректной работы линтера создаем файлы в верхнем уровне
 
-  ### .editorconfig .eslintrc.yml
+  ### .editorconfig 
+  
+    root = true
+
+    [*]
+    charset = utf-8
+    end_of_line = lf
+    indent_size = 2
+    indent_style = space
+    insert_final_newline = true
+    trim_trailing_whitespace = true
+
+    [*.md]
+    trim_trailing_whitespace = false
+  
+  
+  ### .eslintrc.yml
+
+    env:
+    es2017: true
+    browser: true
+    commonjs: true
+    jest: true
+
+    extends: ['htmlacademy/es6', 'plugin:react/recommended']
+
+    parserOptions:
+      ecmaFeatures:
+        jsx: true
+      ecmaVersion: 2018
+      sourceType: module
+
+    plugins: ['react']
+
+    settings:
+      react:
+        version: '16'
+
+  ### .gitignore
+
+    /node_modules
+    /.pnp
+    .pnp.js
+
+    /coverage
+
+    /build
+
+    .DS_Store
+    .env.local
+    .env.development.local
+    .env.test.local
+    .env.production.local
+
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
+
+  ### .gitattributes
+
+    * text=auto
+
+    *.doc     diff=astextplain
+    *.DOC     diff=astextplain
+    *.docx diff=astextplain
+    *.DOCX diff=astextplain
+    *.dot  diff=astextplain
+    *.DOT  diff=astextplain
+    *.pdf  diff=astextplain
+    *.PDF     diff=astextplain
+    *.rtf     diff=astextplain
+    *.RTF     diff=astextplain
+    *.md text
+    *.tex text
+    *.adoc text
+    *.textile text
+    *.mustache text
+    *.csv text
+    *.tab text
+    *.tsv text
+    *.sql text
+
+    *.png binary
+    *.jpg binary
+    *.jpeg binary
+    *.gif binary
+    *.tif binary
+    *.tiff binary
+    *.ico binary
+    *.svg binary
+    #*.svg text
+    *.eps binary
+
+    .gitattributes export-ignore
+    .gitignore export-ignore
 
 ## Импортируем BrowserRouter и оборачиваем App
 
