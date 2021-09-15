@@ -1,10 +1,19 @@
-# Road map
+# React Firestore CRUD
 
-Это учебный проект. Реализует взаимодействие с Firestore используя принципы CRUD
+Проект основывается на [Create React App](https://github.com/facebookincubator/create-react-app) и реализует взаимодействие через [Firestore](https://firebase.google.com/) используя принципы CRUD
 
-## Создаем проект используя Create React App
+## Контент
 
-  ### Если установлен npm 5.2.0+, лучше использовать npx
+- [Создаем проект на основе Create React App](#Создаем-проект-на-основе-Create-React-App)
+
+  - [Проверяем версию npm](#Проверяем-версию-npm)
+
+
+## Создаем проект на основе Create React App
+
+  ### Проверяем версию npm
+  
+  Вводим команду node -v и если версия выше 5.2, используем npx
   
     npx create-react-app react_firestore_crud_260821
 
