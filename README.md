@@ -7,31 +7,31 @@
 ## Контент
 
 - [Создаем проект на основе Create React App](#Создаем-проект-на-основе-Create-React-App)
-  - [Проверяем версию npm](#Проверяем-версию-npm)
-  - [Удаляем все файлы, которые точно не понадобятся в проекте](#Удаляем-все-файлы,-которые-точно-не-понадобятся-в-проекте)
-- [Добавляем зависимости](#Добавляем-зависимости)
-  - [DevDependencies](#DevDependencies)
-  - [Dependencies](#Dependencies)
+  - [Создаем стартовый проект](#Создаем-стартовый-проект)
+  - [Удаляем лишние файлы](#Удаляем-лишние-файлы)
+- [Добавляем основные зависимости](#Добавляем-основные-зависимости)
+  - [DevDependencies для eslint](#DevDependencies-для-eslint)
+  - [Dependencies для router typescript firebase firebase](#Dependencies-для-router-typescript-firebase-firebase)
 - [Создаем обслуживающие файлы](#Создаем-обслуживающие-файлы)
-  - [.editorconfig ](#.editorconfig)
-  - [.eslintrc.yml](#.eslintrc.yml)
-  - [.gitignore](#.gitignore)
-  - [.gitattributes](#.gitattributes)
+  - [editorconfig ](#editorconfig)
+  - [eslintrc](#eslintrc)
+  - [gitignore](#gitignore)
+  - [gitattributes](#gitattributes)
 - [Подключаем BrowserRouter](#Подключаем-BrowserRouter)
 - [Настраиваем маршрутизатор](#Настраиваем-маршрутизатор)
   - [Перечисляем в константах все возможные пути](#Перечисляем-в-константах-все-возможные-пути)
   - [Описываем пути в виде массива объектов](#Описываем-пути-в-виде-массива-объектов)
-  - [Подключаем пути](#Подключаем-пути)
+  - [Подключаем пути в маршрутизации](#Подключаем-пути-в-маршрутизации)
 - [Подключаем стили](#Подключаем-стили)
-  - [Устанавливаем препроцессор в Dependencies](#Устанавливаем-препроцессор-в-Dependencies)
-  - [Настраиваем папки и пути](#Настраиваем-папки-и-пути)
+  - [Устанавливаем Sass в Dependencies](#Устанавливаем-Sass-в-Dependencies)
+  - [Настраиваем папки и пути к препроцессору](#Настраиваем-папки-и-пути-к-препроцессору)
   - [Подключаем препроцессор к приложению](#Подключаем-препроцессор-к-приложению)
 - [Подключаем шрифты](#Подключаем-шрифты)
 - [Подключаем fontAwesomeIcon](#Подключаем-fontAwesomeIcon)
-  - [Dependencies](#Dependencies)
+  - [Инсталируем иконки в Dependencies](#Инсталируем-иконки-в-Dependencies)
   - [Создаем библиотеку](#Создаем-библиотеку)
-  - [Импортируем в приложение](#Импортируем-в-приложение)
-  - [Используем в компоненте](#Используем-в-компоненте)
+  - [Импортируем иконки в головной компонент](#Импортируем-иконки-в-головной-компонент)
+  - [Используем иконки в компоненте](#Используем-иконки-в-компоненте)
 - [Подключаем firestore](#Подключаем-firestore)
   - [Регистрируем firestore в приложении](#Регистрируем-firestore-в-приложении)
   - [Объединяем все CRUD операции в одном файле](#Объединяем-все-CRUD-операции-в-одном-файле)
@@ -47,33 +47,37 @@
 - [Создаем страничку с документом](#Создаем-страничку-с-документом)
   - [Передаем пропсы в компонент для отображения в jsx коде](#Передаем-пропсы-в-компонент-для-отображения-в-jsx-коде)
   - [CRUD](#CRUD)
-- [Лайфхак: добавляем таймер для изменения стейта](#Лайфхак:-добавляем-таймер-для-изменения-стейта)
+- [Лайфхак добавляем таймер для изменения стейта](#Лайфхак-добавляем-таймер-для-изменения-стейта)
 
 ---
 
 ## Создаем проект на основе Create React App
 
-  ### Проверяем версию npm
+  ### Создаем стартовый проект
   
-  Вводим команду node -v и если версия выше 5.2, используем npx
+  Проверяем версию npm. Для этого вводим команду node -v и если версия выше 5.2, используем npx:
   
-    npx create-react-app react_firestore_crud_260821
+    npx create-react-app наименование_проекта
 
-  ###  Удаляем все файлы, которые точно не понадобятся в проекте
+  ###  Удаляем лишние файлы
 
-## Добавляем зависимости
+  В стартовый проект попадают куски кода и файлы, которые можно без побочных эффектов удалить (см.проект)
 
-  ### DevDependencies
+## Добавляем основные зависимости
+
+  ### DevDependencies для eslint
   
-    npm i @babel/core eslint eslint-config-htmlacademy -DE
+    npm i -DE @babel/core eslint eslint-config-htmlacademy
 
-  ### Dependencies
+  ### Dependencies для router typescript firebase firebase
   
-    npm i react-router-dom typescript firebase react-firebase-hooks node-sass
+    npm i react-router-dom typescript firebase react-firebase-hooks
 
-## Для корректной работы линтера создаем файлы в верхнем уровне
+## Создаем обслуживающие файлы
 
-  ### .editorconfig 
+  ### editorconfig 
+
+  /.editorconfig 
   
     root = true
 
@@ -88,8 +92,9 @@
     [*.md]
     trim_trailing_whitespace = false
   
-  
-  ### .eslintrc.yml
+  ### eslintrc
+
+  /.eslintrc.yml
 
     env:
     es2017: true
@@ -111,7 +116,9 @@
       react:
         version: '16'
 
-  ### .gitignore
+  ### gitignore
+
+  /.gitignore
 
     /node_modules
     /.pnp
@@ -131,7 +138,9 @@
     yarn-debug.log*
     yarn-error.log*
 
-  ### .gitattributes
+  ### gitattributes
+
+  /.gitattributes
 
     * text=auto
 
@@ -169,9 +178,11 @@
     .gitattributes export-ignore
     .gitignore export-ignore
 
-## Импортируем BrowserRouter и оборачиваем App
+## Подключаем BrowserRouter
+src/.index
 
-  ### src/.index
+Импортируем BrowserRouter и оборачиваем App
+
 
     import {BrowserRouter} from 'react-router-dom';
 
@@ -191,7 +202,7 @@
     export const MORE_ROUTE = `/more`;
     export const TUTORIALS_ROUTE = `/tutorials`;
 
-  ### Описываем все пути в массиве объектов
+  ### Описываем пути в виде массива объектов
   src/utils/routes.js
 
     import {TUTORIALS_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
@@ -217,7 +228,7 @@
       }
     ];
 
-  ### Подключаем пути
+  ### Подключаем пути в маршрутизации
   src/components/app.jsx
 
   Для этого импортируем NavLink. В отличии от Link он позволяет воспользоваться стилизацией для выделения активной ссылки и включает в себя а) activeClassName, значение которого просто добавляется к стилизации, и б) activeStyle, который используется в качестве встроенной стилизации (activeStyle={{color: "green", fontWeight: "bold"}})
@@ -265,11 +276,11 @@
 
 Это возможно сделать несколькими способами: а) подключая bootstrap б) используя styledComponents в) используя препроцессор scss. Нас интересует только последний вариант
 
-  ### Устанавливаем препроцессор в Dependencies
+  ### Устанавливаем Sass в Dependencies
   
     npm i --save node-sass
 
-  ### Настраиваем папки и пути
+  ### Настраиваем папки и пути к препроцессору
 
   Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке tutorial-add будет находится одновременно два файла - tutorial-add/tutorial-add.jsx и tutorial-add/tutorial-add.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
 
@@ -304,7 +315,7 @@
 
 ## Подключаем fontAwesomeIcon
 
-  ### Инсталируем в Dependencies 
+  ### Инсталируем иконки в Dependencies 
 
     npm i -S @fortawesome/fontawesome-svg-core @fortawesome/react-fontawesome @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
 
@@ -326,12 +337,12 @@
 
   В данном случае, поскольку наименования faStar и в стилях regular, и в solid совпадают, мы воспользовались псевдонимами.
 
-  ### Импортируем в приложение
+  ### Импортируем иконки в головной компонент
   src/components/app/app.jsx
 
     import '../../utils/fontawesome.js';
 
-  ### Используем в компоненте
+  ### Используем иконки в компоненте
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
     <FontAwesomeIcon icon={[`far`, `star`]} />
@@ -520,7 +531,7 @@
       const renderIfCurrentTutorialTrue = () => (
         <Tutorial tutorial={currentTutorial} refreshList={refreshList} />
       );
-  
+
 ## Заменяем обычное получение данных из firebase на hooks
   src/components/tutorial-list
 
@@ -643,7 +654,7 @@
 
   На этом основной функционал закончен. Нюансы можно найти в самом проекте
 
-## Лайфхак: добавляем таймер для изменения стейта
+## Лайфхак добавляем таймер для изменения стейта
   src/components/detail
 
   У нас уже есть стейт, который меняется под действием внешних факторов. Это простое сообщение информирующее о том, что данные на сервере изменились:
