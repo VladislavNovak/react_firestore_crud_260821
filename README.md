@@ -4,7 +4,7 @@
 
 ---
 
-## Контент
+## Навигация
 
 - [Создаем проект на основе Create React App](#Создаем-проект-на-основе-Create-React-App)
   - [Создаем стартовый проект](#Создаем-стартовый-проект)
@@ -65,6 +65,8 @@
 
 ## Добавляем основные зависимости
 
+Переходим в сам проект: cd наименование_проекта
+
   ### DevDependencies для eslint
   
     npm i -DE @babel/core eslint eslint-config-htmlacademy
@@ -74,6 +76,10 @@
     npm i react-router-dom typescript firebase react-firebase-hooks
 
 ## Создаем обслуживающие файлы
+
+Посредством терминала bash вводим команду: 
+
+    touch .editorconfig .eslintrc.yml .gitattributes
 
   ### editorconfig 
 
@@ -116,28 +122,6 @@
       react:
         version: '16'
 
-  ### gitignore
-
-  /.gitignore
-
-    /node_modules
-    /.pnp
-    .pnp.js
-
-    /coverage
-
-    /build
-
-    .DS_Store
-    .env.local
-    .env.development.local
-    .env.test.local
-    .env.production.local
-
-    npm-debug.log*
-    yarn-debug.log*
-    yarn-error.log*
-
   ### gitattributes
 
   /.gitattributes
@@ -177,6 +161,30 @@
 
     .gitattributes export-ignore
     .gitignore export-ignore
+
+  ### gitignore
+
+  Этот файл уже должен быть по умолчанию. Проверяем на соответствие:
+
+  /.gitignore
+
+    /node_modules
+    /.pnp
+    .pnp.js
+
+    /coverage
+
+    /build
+
+    .DS_Store
+    .env.local
+    .env.development.local
+    .env.test.local
+    .env.production.local
+
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
 
 ## Подключаем BrowserRouter
 src/.index
