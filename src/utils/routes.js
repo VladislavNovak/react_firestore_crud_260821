@@ -1,18 +1,18 @@
 import {TUTORIALS_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
-import Appendor from '../components/appendor/appendor';
-import More from '../components/more/more';
-import Tasks from '../components/tasks/tasks';
+import AddTask from '../pages/add-task/Add-task';
+import More from '../pages/more/More';
+import TaskList from '../pages/task-list/Task-list';
 
 export const publicRoutes = [
   {
-    title: `Add`,
+    title: `Add Task`,
     path: ADD_ROUTE,
-    Component: Appendor
+    Component: AddTask
   },
   {
-    title: `List`,
+    title: `Task List`,
     path: TUTORIALS_ROUTE,
-    Component: Tasks
+    Component: TaskList
   },
   {
     title: `More`,

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useCollection} from "react-firebase-hooks/firestore";
 import DataService from '../../services/data-service.js';
-import Detail from '../detail/detail.jsx';
 import {faShare} from '@fortawesome/free-solid-svg-icons';
+import {Detail} from '../../components';
 
 // ----------------------------------------------------------------------------------
 
@@ -25,12 +25,12 @@ const Tasks = () => {
   };
 
   const renderIfTutorialsExist = () => (
-    <ul className="tasks__list">
+    <ul className="task-list__list">
       { !loading && tutorials && tutorials.docs.map((tutorial, index) => (
         <li
           key={tutorial.id}
           onClick={() => setActiveTutorial(tutorial, index)}
-          className={`item-like-button tasks__item ` + (index === currentIndex ? `tasks__item--active` : ``)}>
+          className={`item-like-button task-list__item ` + (index === currentIndex ? `task-list__item--active` : ``)}>
           {tutorial.data().title}
         </li>
       ))}
@@ -38,7 +38,7 @@ const Tasks = () => {
   );
 
   const renderIfTutorialsNotExist = (arg) => (
-    <div className ="tasks__notexist">{arg}</div>
+    <div className ="task-list__notexist">{arg}</div>
   );
 
   const renderIfCurrentTutorialTrue = () => (
@@ -46,16 +46,16 @@ const Tasks = () => {
   );
 
   const renderIfCurrentTutorialFalse = () => (
-    <div className="tasks__warning">
+    <div className="task-list__warning">
       <span>Please click on a Task...</span>
-      <FontAwesomeIcon icon={faShare} className="tasks__warning-icon fa-rotate-180" />
+      <FontAwesomeIcon icon={faShare} className="task-list__warning-icon fa-rotate-180" />
     </div>
   );
 
   return (
-    <div className="form tasks">
-      <h1 className="tasks__title">Saved <span>TASK</span> list</h1>
-      <div className="tasks__list-wrap">
+    <div className="form task-list">
+      <h1 className="task-list__title">Saved <span>TASK</span> list</h1>
+      <div className="task-list__list-wrap">
         {error && <strong>Error: {error}</strong>}
         {loading && renderIfTutorialsNotExist(`Loading...`)}
         {tutorials && tutorials.docs.length ? renderIfTutorialsExist() : renderIfTutorialsNotExist(`Create a new entry!`)}

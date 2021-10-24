@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import React, {useState} from 'react';
-import {EnterGroup} from '..';
+import {EnterGroup} from '../../components';
 import DataService from '../../services/data-service';
 import {Controls} from '../../utils/constants';
 
-const Appendor = () => {
+const AddTask = () => {
 
   const initialTutorialState = {
     ...Object.fromEntries(Controls.map((item) => [item, ``])),
@@ -37,9 +37,9 @@ const Appendor = () => {
   };
 
   const renderIfSubmittedTrue = () => (
-    <div className="appendor__warning">
+    <div className="add-task__warning">
       <p>The task was <span>successfully saved</span> on the server!</p>
-      <button onClick={newTutorial} className="appendor__btns">Create next</button>
+      <button onClick={newTutorial} className="add-task__btns">Create next</button>
     </div>
   );
 
@@ -56,18 +56,18 @@ const Appendor = () => {
       <button
         onClick={saveTutorial}
         disabled={!tutorial.title && !tutorial.description}
-        className="appendor__btns">
+        className="add-task__btns">
           Save
       </button>
     </div>
   );
 
   return (
-    <div className="form appendor">
-      <h1 className="appendor__title">Add <span>NEW</span> task</h1>
+    <div className="form add-task">
+      <h1 className="add-task__title">Add <span>NEW</span> task</h1>
       {submitted ? renderIfSubmittedTrue() : renderIfSubmittedFalse()}
     </div>
   );
 };
 
-export default Appendor;
+export default AddTask;
