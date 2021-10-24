@@ -1,26 +1,12 @@
-# React Firestore CRUD
+Использует **React**, **Firebase**. 
+Реализует запросы по принципу **CRUD**. 
+Стилизация **Sass**. 
 
-Проект основывается на [Create React App](https://github.com/facebookincubator/create-react-app) и реализует взаимодействие с сервером через [Firestore](https://firebase.google.com/) используя принципы CRUD
+-----
 
--------------------------------------------------------
-
-## Навигация
-
-- [Подключаем BrowserRouter](#Подключаем-BrowserRouter)
-- [Настраиваем маршрутизатор](#Настраиваем-маршрутизатор)
-  - [Перечисляем в константах все возможные пути](#Перечисляем-в-константах-все-возможные-пути)
-  - [Описываем пути в виде массива объектов](#Описываем-пути-в-виде-массива-объектов)
-  - [Подключаем пути в маршрутизации](#Подключаем-пути-в-маршрутизации)
-- [Подключаем стили](#Подключаем-стили)
-  - [Устанавливаем Sass в Dependencies](#Устанавливаем-Sass-в-Dependencies)
-  - [Настраиваем папки и пути к препроцессору](#Настраиваем-папки-и-пути-к-препроцессору)
-  - [Подключаем препроцессор к приложению](#Подключаем-препроцессор-к-приложению)
-- [Подключаем шрифты](#Подключаем-шрифты)
+- [Маршрутизация](#Маршрутизация)
+- [Препроцессор Sass](#Препроцессор-Sass)
 - [Подключаем fontAwesomeIcon](#Подключаем-fontAwesomeIcon)
-  - [Инсталируем иконки в Dependencies](#Инсталируем-иконки-в-Dependencies)
-  - [Создаем библиотеку](#Создаем-библиотеку)
-  - [Импортируем иконки в головной компонент](#Импортируем-иконки-в-головной-компонент)
-  - [Используем иконки в компоненте](#Используем-иконки-в-компоненте)
 - [Подключаем firestore](#Подключаем-firestore)
   - [Регистрируем firestore в приложении](#Регистрируем-firestore-в-приложении)
   - [Объединяем все CRUD операции в одном файле](#Объединяем-все-CRUD-операции-в-одном-файле)
@@ -40,12 +26,101 @@
 - [Паттерны и лайфхаки](#Паттерны-и-лайфхаки)
   - [Таймер для изменения стейта](#Таймер-для-изменения-стейта)
 
----
+# Маршрутизация
 
-## Подключаем BrowserRouter
-src/.index
+1. **Создаем страницы**
 
-Импортируем BrowserRouter и оборачиваем App
+В проекте будет две страницы, поэтому создаем компоненты, которые будут их представлять: src/pages/ (add-task/AddTask, task-list/TaskList, more/More)
+
+2. **Перечисляем в константах пути к ним:**
+
+src/routes/constants.js
+
+    export const ADD_ROUTE = `/add`;
+
+3. **Описываем пути в виде массива объектов:**
+
+src/routes/routes.js
+
+    import {ADD_ROUTE} from './constants';
+    import AddTask from '../pages/add-task/Add-task';
+
+    export const publicRoutes = [
+      {
+        title: `Add Task`,
+        path: ADD_ROUTE,
+        Component: AddTask
+      },
+    ];
+
+4. **Создаем компонент отвечающий за навигацию:**
+
+Она позволит перемещаться между страницами при клике по указанному пункту. Используем NavLink. В отличии от простого Link, он позволяет воспользоваться стилизацией для выделения активной ссылки. NavLink включает в себя activeClassName (значение которого просто добавляется к стилизации) и/или activeStyle (используется в качестве встроенной стилизации, например activeStyle={{color: "green", fontWeight: "bold"}})
+
+src/components/navbar/Navbar.jsx
+
+    import React from 'react';
+    import {NavLink} from "react-router-dom";
+    import {publicRoutes} from '../../routes/routes';
+
+    const Navbar = () => {
+      return (
+        <nav className="navbar">
+          <ul className="navbar__list">
+            {publicRoutes.map(({path, title}) => (
+              <li key={path} className={isClicked ? `navbar__item active` : `navbar__item`}>
+                <NavLink to={path}
+                  onClick={isClicked ? handleClick : null}
+                  className={isClicked ? `navbar__link active` : `navbar__link`}
+                  activeClassName="navbar__link--selected">
+                  {title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      );
+    };
+
+    export default Navbar;
+
+5. **Подключаем маршрутизацию:**
+
+Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался на TASKLIST_ROUTE:
+
+src/App.js
+
+    import React from 'react';
+    import {Switch, Route, Redirect} from "react-router-dom";
+    import {publicRoutes} from './routes/routes';
+    import {TASKLIST_ROUTE} from './routes/constants';
+    import {Navbar} from './components';
+
+    import './utils/fontawesome.js';
+
+    function App() {
+      return (
+        <div>
+          <Navbar />
+
+          <div className="container">
+            <Switch>
+              {publicRoutes.map(({path, Component}) => <Route key={path} path={path} component={Component} exact />)}
+              <Redirect to={TASKLIST_ROUTE} />
+            </Switch>
+          </div>
+        </div>
+
+      );
+    }
+
+    export default App;
+
+6. **Подключаем BrowserRouter:**
+
+Импортируем BrowserRouter и оборачиваем App. Это позволит воспользоваться маршрутизацией во всем приложении:
+
+src/index
 
     import {BrowserRouter} from 'react-router-dom';
 
@@ -56,109 +131,30 @@ src/.index
       document.getElementById(`root`)
     );
 
-## Настраиваем маршрутизатор
+# Препроцессор Sass
 
-  ### Перечисляем в константах все возможные пути
-  src/utils/constants.js
+Установка описана в [базовая настройка](#Базовые-настройки)
 
-    export const ADD_ROUTE = `/add`;
-    export const MORE_ROUTE = `/more`;
-    export const TUTORIALS_ROUTE = `/tutorials`;
+1. **Настраиваем файл style:**
 
-  ### Описываем пути в виде массива объектов
-  src/utils/routes.js
+Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке add-task будет находится одновременно два файла - add-task/Add-task.jsx и add-task/add-task.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
 
-    import {TUTORIALS_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
-    import TutorialAdd from '../components/tutorial-add/tutorial-add';
-    import More from '../components/more/more';
-    import TutorialsList from '../components/tutorials-list/tutorials-list';
-
-    export const publicRoutes = [
-      {
-        title: `Add`,
-        path: ADD_ROUTE,
-        Component: TutorialAdd
-      },
-      {
-        title: `List`,
-        path: TUTORIALS_ROUTE,
-        Component: TutorialsList
-      },
-      {
-        title: `More`,
-        path: MORE_ROUTE,
-        Component: More
-      }
-    ];
-
-  ### Подключаем пути в маршрутизации
-  src/components/app.jsx
-
-  Для этого импортируем NavLink. В отличии от Link он позволяет воспользоваться стилизацией для выделения активной ссылки и включает в себя а) activeClassName, значение которого просто добавляется к стилизации, и б) activeStyle, который используется в качестве встроенной стилизации (activeStyle={{color: "green", fontWeight: "bold"}})
-
-    import {Switch, Route, Redirect, NavLink} from "react-router-dom";
-    import {publicRoutes} from '../../utils/routes';
-    import {TUTORIALS_ROUTE} from '../../utils/constants';
-
-    function App() {
-      return (
-        <div>
-          <nav id="navbar">
-            <ul>
-              <li>
-                <p>Valdix</p>
-              </li>
-              {publicRoutes.map(({path, title}) => (
-                <li key={path}>
-                  <NavLink to={path}
-                    className="navbar__link"
-                    activeClassName="navbar__link--selected">
-                    {title}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <Switch>
-              {publicRoutes.map(({path, Component}) => <Route key={path} path={path} component={Component} exact />)}
-              <Redirect to={TUTORIALS_ROUTE} />
-            </Switch>
-          </div>
-        </div>
-
-      );
-    }
-
-    export default App;
-
-  Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался или на TUTORIALS_ROUTE.
-
-## Подключаем стили
-
-Это возможно сделать несколькими способами: а) подключая bootstrap б) используя styledComponents в) используя препроцессор scss. Нас интересует только последний вариант
-
-  ### Устанавливаем Sass в Dependencies
-  
-    npm i --save node-sass
-
-  ### Настраиваем папки и пути к препроцессору
-
-  Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке tutorial-add будет находится одновременно два файла - tutorial-add/tutorial-add.jsx и tutorial-add/tutorial-add.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
+src/assets/sass/style.scss
 
     @import "./fonts.scss";
     @import "./common.scss";
     @import "./variables.scss";
 
-    @import "../../components/tutorial-add/tutorial-add.scss";
+    @import "../../pages/add-task/Add-task.jsx";
+    @import "../../components/navbar/Navbar.jsx";
 
-  ### Подключаем препроцессор к приложению
-  src/index.js
+2. **Подключаем style к приложению:**
+
+src/index.js
 
     import './assets/sass/style.scss';
 
-## Подключаем шрифты
+3. **Подключаем шрифты:**
 
 Скачиваем необходимые шрифты и кладем их в новую папку по пути src/assets/fonts. Теперь можно в файл src/assets/sass/fonts.scss их экспортировать
 
@@ -176,14 +172,19 @@ src/.index
 
     @import "./fonts.scss";
 
-## Подключаем fontAwesomeIcon
+# Подключаем fontAwesomeIcon
 
-  ### Инсталируем иконки в Dependencies 
+1. **Инсталируем иконки:**
+
+В Dependencies
 
     npm i -S @fortawesome/fontawesome-svg-core @fortawesome/react-fontawesome @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
 
-  ### Создаем библиотеку
-  src/utils/fontawesome.js
+2. **Создаем библиотеку:**
+
+Поскольку наименования faStar и в стилях regular, и в solid совпадают, мы воспользовались псевдонимами.
+
+src/utils/fontawesome.js
 
     import {library} from '@fortawesome/fontawesome-svg-core';
 
@@ -198,21 +199,23 @@ src/.index
 
     library.add(faCoffee, farStarRegular, fasStarSolid);
 
-  В данном случае, поскольку наименования faStar и в стилях regular, и в solid совпадают, мы воспользовались псевдонимами.
+3. **Импортируем иконки в головной компонент:**
 
-  ### Импортируем иконки в головной компонент
-  src/components/app/app.jsx
+src/App.jsx
 
     import '../../utils/fontawesome.js';
 
-  ### Используем иконки в компоненте
+4. **Используем иконки в компоненте:**
+
+src/pages/more/More.jsx
+
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
     <FontAwesomeIcon icon={[`far`, `star`]} />
     <FontAwesomeIcon icon={[`fas`, `star`]} />
     <FontAwesomeIcon icon="faCoffee" />
 
-  Но, конечно, подключить иконку можно и напрямую, без использовани библиотеки. В этом случае весь импорт и использованиев каждом конкретном файле будут выглядеть так:
+Конечно, подключить иконку можно и напрямую, без использовани библиотеки. В этом случае весь импорт и использованиев каждом конкретном файле будут выглядеть так:
     
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
     import {faCoffee} from '@fortawesome/free-solid-svg-icons';
@@ -223,8 +226,9 @@ src/.index
 
 ## Подключаем firestore
 
-  ### Регистрируем firestore в приложении
-  src/utils/firebase.js
+1. **Регистрируем firestore в приложении:**
+
+src/utils/firebase.js
 
     import firebase from 'firebase/compat/app';
     import 'firebase/compat/firestore';
@@ -235,7 +239,7 @@ src/.index
 
     export default firebase.firestore();
 
-  Внимание: подобного типа импорт актуален начиная с девятой версии firebase для совместимости с прошлыми версиями. Если планируется работать только с версиями включая девятую и новее, нужно использовать: 
+Внимание: подобного типа импорт актуален начиная с девятой версии firebase для совместимости с прошлыми версиями. Если планируется работать только с версиями включая девятую и новее, нужно использовать: 
   
     import {initializeApp} from 'firebase/app';
 
@@ -245,10 +249,11 @@ src/.index
 
   Данные для конфигурации (обозначено как XXX и содержащее apiKey, appId и прочее) можно получить на страничке проекта → project overview → project settings
 
-  ### Объединяем все CRUD операции в одном файле
-  src/services/firebase.js
+2. **Объединяем все CRUD операции в одном файле:**
 
-  Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения
+Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения.
+
+src/services/firebase.js
 
     import firebase from "../utils/firebase";
 
@@ -263,28 +268,36 @@ src/.index
 
     export default DataService;
 
-## Создаем страничку с функционалом добавления документа
+## Функционал добавления данных в Firestore
 
-  ### Базовая структура для создания документа
-  src/utils/constants.js
+Создаем страничку данные с которой будут отправляться на сервер
+
+1. **Структура данных:**
+
+Предположим, что структура данных, которая будет отправлена на сервер и, соответственно, отрисована в view-компонентах, состоит из наименования и описания (это title и description). Подобная структура будет служить основой для создания полей формы и для тех данных, которые будут заносится в базу firestore. Таким образом, если появится необходимость в изменении проекта, можно просто добавить в массив новое значение.
+
+src/utils/constants.js
 
     export const Controls = [`title`, `description`];
 
-  Массив будет служить основой для создания полей формы и для тех данных, которые будут заносится в базу firestore. Таким образом, если появится необходимость в изменении проекта, можно динамически добавлять всю необходимую информацию
+2. **Создаем форму с полями:**
 
-  ### Создаем форму с полями
-  src/components/tutorial-add
+На основании массива Controls 
+ - динамически заполняется initialState 
+ - формируется jsx структура. Подобным образом можно создавать форму с любым количеством полей.
+
+src/pages/add-task/Add-task.jsx
 
     import {Controls} from '../../utils/constants';
 
-    const TutorialAdd = () => {
+    const AddTask = () => {
 
-      const initialTutorialState = {
+      const initialState = {
         ...Object.fromEntries(Controls.map((item) => [item, ``])),
         published: false,
       };
 
-      const [tutorial, setTutorial] = useState(initialTutorialState);
+      const [tutorial, setTutorial] = useState(initialState);
 
       const handleInputChange = ({target: {name, value}}) => {
         setTutorial({...tutorial, [name]: value});
@@ -311,12 +324,11 @@ src/.index
       );
     }
 
-    export default TutorialAdd;
+    export default AddTask;
 
-  На основании массива Controls a) динамически заполняется initialTutorialState b) формируется jsx структура. На основании подобного паттерна можно создавать форму с любым количеством полей
+### Сохраняем новый документ в firestore
 
-  ### Сохраняем новый документ в firestore
-  src/components/tutorial-add
+src/components/tutorial-add
 
   Создаем стейт, который управляет отрисовкой конкретных jsx блоков
 
@@ -330,7 +342,7 @@ src/.index
     <button onClick={saveTutorial} >Submit</button>
 
     const newTutorial = () => {
-      setTutorial(initialTutorialState);
+      setTutorial(initialState);
       setSubmitted(false);
     };
 
@@ -444,13 +456,13 @@ src/.index
 
   Далее - создаем стейт, в котором будем эти данные хранить. Напомню: используя конструкцию ...Object.fromEntries, мы можем добавлять в объект любое количество полей. Так как у нас поля основаны на данных из src/utils/constants, то и полей у нас будет лишь два - title и description:
 
-    const initialTutorialState = {
+    const initialState = {
       id: null,
       ...Object.fromEntries(Controls.map((item) => [item, ``])),
       published: false,
     };
 
-    const [tutorial, setTutorial] = useState(initialTutorialState);
+    const [tutorial, setTutorial] = useState(initialState);
 
     if (tutorial.id !== currentTutorial.id) {
       setTutorial(currentTutorial);

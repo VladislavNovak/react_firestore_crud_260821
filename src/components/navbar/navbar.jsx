@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-import {publicRoutes} from '../../utils/routes';
+import {publicRoutes} from '../../routes/routes';
 import {KeyCode} from '../../utils/constants';
 
 // ----------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route, Redirect} from "react-router-dom";
-import {publicRoutes} from './utils/routes';
-import {TUTORIALS_ROUTE} from './utils/constants';
+import {publicRoutes} from './routes/routes';
+import {TASKLIST_ROUTE} from './routes/constants';
 import {Navbar} from './components';
 
 import './utils/fontawesome.js';
@@ -14,7 +14,7 @@ function App() {
       <div className="container">
         <Switch>
           {publicRoutes.map(({path, Component}) => <Route key={path} path={path} component={Component} exact />)}
-          <Redirect to={TUTORIALS_ROUTE} />
+          <Redirect to={TASKLIST_ROUTE} />
         </Switch>
       </div>
     </div>

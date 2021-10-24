@@ -6,13 +6,13 @@ import {Controls} from '../../utils/constants';
 
 const AddTask = () => {
 
-  const initialTutorialState = {
+  const initialState = {
     ...Object.fromEntries(Controls.map((item) => [item, ``])),
     published: false,
   };
 
   const [submitted, setSubmitted] = useState(false);
-  const [tutorial, setTutorial] = useState(initialTutorialState);
+  const [tutorial, setTutorial] = useState(initialState);
 
   const handleInputChange = ({target: {name, value}}) => {
     setTutorial({...tutorial, [name]: value});
@@ -32,7 +32,7 @@ const AddTask = () => {
   };
 
   const newTutorial = () => {
-    setTutorial(initialTutorialState);
+    setTutorial(initialState);
     setSubmitted(false);
   };
 
