@@ -6,211 +6,46 @@
 
 ## Навигация
 
-- [React Firestore CRUD](#React-Firestore-CRUD)
-  - [Навигация](#Навигация)
-  - [Создаем проект на основе Create React App](#Создаем-проект-на-основе-Create-React-App)
-    - [Создаем стартовый проект](#Создаем-стартовый-проект)
-    - [Удаляем лишние файлы](#Удаляем-лишние-файлы)
-  - [Добавляем основные зависимости](#Добавляем-основные-зависимости)
-    - [DevDependencies для eslint](#DevDependencies-для-eslint)
-    - [Dependencies для router typescript firebase firebase](#Dependencies-для-router-typescript-firebase-firebase)
-  - [Создаем обслуживающие файлы](#Создаем-обслуживающие-файлы)
-    - [editorconfig ](#editorconfig)
-    - [eslintrc](#eslintrc)
-    - [gitignore](#gitignore)
-    - [gitattributes](#gitattributes)
-  - [Связываем проект с GITHUB](#Связываем-проект-с-GITHUB)
-  - [Подключаем BrowserRouter](#Подключаем-BrowserRouter)
-  - [Настраиваем маршрутизатор](#Настраиваем-маршрутизатор)
-    - [Перечисляем в константах все возможные пути](#Перечисляем-в-константах-все-возможные-пути)
-    - [Описываем пути в виде массива объектов](#Описываем-пути-в-виде-массива-объектов)
-    - [Подключаем пути в маршрутизации](#Подключаем-пути-в-маршрутизации)
-  - [Подключаем стили](#Подключаем-стили)
-    - [Устанавливаем Sass в Dependencies](#Устанавливаем-Sass-в-Dependencies)
-    - [Настраиваем папки и пути к препроцессору](#Настраиваем-папки-и-пути-к-препроцессору)
-    - [Подключаем препроцессор к приложению](#Подключаем-препроцессор-к-приложению)
-  - [Подключаем шрифты](#Подключаем-шрифты)
-  - [Подключаем fontAwesomeIcon](#Подключаем-fontAwesomeIcon)
-    - [Инсталируем иконки в Dependencies](#Инсталируем-иконки-в-Dependencies)
-    - [Создаем библиотеку](#Создаем-библиотеку)
-    - [Импортируем иконки в головной компонент](#Импортируем-иконки-в-головной-компонент)
-    - [Используем иконки в компоненте](#Используем-иконки-в-компоненте)
-- [FIRESTORE](#FIRESTORE)
-  - [Подключаем firestore](#Подключаем-firestore)
-    - [Регистрируем firestore в приложении](#Регистрируем-firestore-в-приложении)
-    - [Объединяем все CRUD операции в одном файле](#Объединяем-все-CRUD-операции-в-одном-файле)
-  - [Создаем страничку с функционалом добавления документа](#Создаем-страничку-с-функционалом-добавления-документа)
-    - [Базовая структура для создания документа](#Базовая-структура-для-создания-документа)
-    - [Создаем форму с полями](#Создаем-форму-с-полями)
-    - [Сохраняем новый документ в firestore](#Сохраняем-новый-документ-в-firestore)
-  - [Создаем страничку с перечислением коллекции](#Создаем-страничку-с-перечислением-коллекции)
-    - [Получаем данные из firestore](#Получаем-данные-из-firestore)
-    - [Реагируем на выбор конкретного документа](#Реагируем-на-выбор-конкретного-документа)
-  - [Заменяем обычное получение данных из firebase на hooks](#Заменяем-обычное-получение-данных-из-firebase-на-hooks)
-    - [Подгоняем jsx под хук](#Подгоняем-jsx-под-хук)
-  - [Создаем страничку с документом](#Создаем-страничку-с-документом)
-    - [Передаем пропсы в компонент для отображения в jsx коде](#Передаем-пропсы-в-компонент-для-отображения-в-jsx-коде)
-    - [CRUD](#CRUD)
-  - [Лайфхак добавляем таймер для изменения стейта](#Лайфхак-добавляем-таймер-для-изменения-стейта)
+- [Подключаем BrowserRouter](#Подключаем-BrowserRouter)
+- [Настраиваем маршрутизатор](#Настраиваем-маршрутизатор)
+  - [Перечисляем в константах все возможные пути](#Перечисляем-в-константах-все-возможные-пути)
+  - [Описываем пути в виде массива объектов](#Описываем-пути-в-виде-массива-объектов)
+  - [Подключаем пути в маршрутизации](#Подключаем-пути-в-маршрутизации)
+- [Подключаем стили](#Подключаем-стили)
+  - [Устанавливаем Sass в Dependencies](#Устанавливаем-Sass-в-Dependencies)
+  - [Настраиваем папки и пути к препроцессору](#Настраиваем-папки-и-пути-к-препроцессору)
+  - [Подключаем препроцессор к приложению](#Подключаем-препроцессор-к-приложению)
+- [Подключаем шрифты](#Подключаем-шрифты)
+- [Подключаем fontAwesomeIcon](#Подключаем-fontAwesomeIcon)
+  - [Инсталируем иконки в Dependencies](#Инсталируем-иконки-в-Dependencies)
+  - [Создаем библиотеку](#Создаем-библиотеку)
+  - [Импортируем иконки в головной компонент](#Импортируем-иконки-в-головной-компонент)
+  - [Используем иконки в компоненте](#Используем-иконки-в-компоненте)
+- [Подключаем firestore](#Подключаем-firestore)
+  - [Регистрируем firestore в приложении](#Регистрируем-firestore-в-приложении)
+  - [Объединяем все CRUD операции в одном файле](#Объединяем-все-CRUD-операции-в-одном-файле)
+- [Создаем страничку с функционалом добавления документа](#Создаем-страничку-с-функционалом-добавления-документа)
+  - [Базовая структура для создания документа](#Базовая-структура-для-создания-документа)
+  - [Создаем форму с полями](#Создаем-форму-с-полями)
+  - [Сохраняем новый документ в firestore](#Сохраняем-новый-документ-в-firestore)
+- [Создаем страничку с перечислением коллекции](#Создаем-страничку-с-перечислением-коллекции)
+  - [Получаем данные из firestore](#Получаем-данные-из-firestore)
+  - [Реагируем на выбор конкретного документа](#Реагируем-на-выбор-конкретного-документа)
+- [Заменяем обычное получение данных из firebase на hooks](#Заменяем-обычное-получение-данных-из-firebase-на-hooks)
+  - [Подгоняем jsx под хук](#Подгоняем-jsx-под-хук)
+- [Создаем страничку с документом](#Создаем-страничку-с-документом)
+  - [Передаем пропсы в компонент для отображения в jsx коде](#Передаем-пропсы-в-компонент-для-отображения-в-jsx-коде)
+  - [CRUD](#CRUD)
+- [Базовые настройки](#Базовые-настройки)
+- [Паттерны и лайфхаки](#Паттерны-и-лайфхаки)
+  - [Таймер для изменения стейта](#Таймер-для-изменения-стейта)
 
--------------------------------------------------------
-
-## Создаем проект на основе Create React App
-
-  ### Создаем стартовый проект
-  
-  Проверяем версию npm. Для этого вводим команду node -v и если версия выше 5.2, используем npx:
-  
-    npx create-react-app наименование_проекта
-
-  ###  Удаляем лишние файлы
-
-  В стартовый проект попадают куски кода и файлы, которые можно без побочных эффектов удалить (см.проект)
-
-## Добавляем основные зависимости
-
-Переходим в терминале bash в сам проект: 
-
-    cd наименование_проекта
-
-  ### DevDependencies для eslint
-  
-    npm i -DE @babel/core eslint eslint-config-htmlacademy
-
-  ### Dependencies для router typescript firebase firebase
-  
-    npm i react-router-dom typescript firebase react-firebase-hooks
-
-## Создаем обслуживающие файлы
-
-Посредством терминала bash вводим команду: 
-
-    touch .editorconfig .eslintrc.yml .gitattributes
-
-  ### editorconfig 
-  
-    root = true
-
-    [*]
-    charset = utf-8
-    end_of_line = lf
-    indent_size = 2
-    indent_style = space
-    insert_final_newline = true
-    trim_trailing_whitespace = true
-
-    [*.md]
-    trim_trailing_whitespace = false
-  
-  ### eslintrc
-
-    env:
-      es2017: true
-      browser: true
-      commonjs: true
-      jest: true
-
-    extends: ['htmlacademy/es6', 'plugin:react/recommended']
-
-    parserOptions:
-      ecmaFeatures:
-        jsx: true
-      ecmaVersion: 2018
-      sourceType: module
-
-    plugins: ['react']
-
-    settings:
-      react:
-        version: '16'
-
-  ### gitattributes
-
-    * text=auto
-
-    *.doc     diff=astextplain
-    *.DOC     diff=astextplain
-    *.docx    diff=astextplain
-    *.DOCX    diff=astextplain
-    *.dot     diff=astextplain
-    *.DOT     diff=astextplain
-    *.pdf     diff=astextplain
-    *.PDF     diff=astextplain
-    *.rtf     diff=astextplain
-    *.RTF     diff=astextplain
-    *.md text
-    *.tex text
-    *.adoc text
-    *.textile text
-    *.mustache text
-    *.csv text
-    *.tab text
-    *.tsv text
-    *.sql text
-
-    *.png binary
-    *.jpg binary
-    *.jpeg binary
-    *.gif binary
-    *.tif binary
-    *.tiff binary
-    *.ico binary
-    *.svg binary
-    #*.svg text
-    *.eps binary
-
-    .gitattributes export-ignore
-    .gitignore export-ignore
-
-  ### gitignore
-
-  Файл .gitignore уже должен быть по умолчанию. Просто проверяем на соответствие:
-
-    /node_modules
-    /.pnp
-    .pnp.js
-
-    /coverage
-
-    /build
-
-    .DS_Store
-    .env.local
-    .env.development.local
-    .env.test.local
-    .env.production.local
-
-    npm-debug.log*
-    yarn-debug.log*
-    yarn-error.log*
-
-## Связываем проект с GITHUB 
-
-В самом GITHUB создаем новый репозиторий. В терминале Bash вводим:
-
-    git remote add origin https://все_что_скопировали
-
-Далее нужно сохранить все изменения в локальном репозитории и ввести:
-
-    git push -u origin master
-
-## Настраиваем порт
-
-Обычно в package.json за старт программы отвечает скрипт:
-
-    "start": "react-scripts start",
-
-В этом случае скрипт порт равет 3000. На одном конкретном порте может быть единовременно расположена лишь одна программа. Если захотим запускать несколько проектов одновременно, чтобы исключить конфликт их работы, нужно заранее настроить порт. Поэтому заменяем приведенную выше строку на следующую:
-
-    "start": "set port=3012 && react-scripts start",
-
--------------------------------------------------------
+---
 
 ## Подключаем BrowserRouter
 src/.index
 
 Импортируем BrowserRouter и оборачиваем App
-
 
     import {BrowserRouter} from 'react-router-dom';
 
@@ -684,7 +519,182 @@ src/.index
 
   На этом основной функционал закончен. Нюансы можно найти в самом проекте
 
-## Лайфхак добавляем таймер для изменения стейта
+## Базовые настройки
+
+Если ещё не установлен yarn:
+
+    npm i -g yarn
+
+Чтобы создать проект на основе create-react-app проверяем актуальную версию node:
+
+    node -v
+
+Если она выше 5.2 вводим, где notes-firestore - наименование нового проекта:
+
+    npx create-react-app notes-firestore
+
+Переходим в сам проект через cd notes-firestore и устанавливаем зависимости (выбираем необходимые):
+
+    yarn add node-sass typescript react-router-dom axios bootstrap firebase react-firebase-hooks
+
+Часто при установке sass возникает ошибка версий. В этом случае:
+
+    yarn remove node-sass 
+    yarn add node-sass@4.14.1
+
+Настраиваем линтер (сам eslint уже установлен вместе с create-react-app):
+
+    yarn add eslint-plugin-babel eslint-plugin-react eslint-config-htmlacademy --dev
+
+Создаем обслуживающие функционал:
+
+    touch .editorconfig .eslintrc.json .gitattributes
+
+Наполняем editorconfig:
+
+    root = true
+
+    [*]
+    charset = utf-8
+    end_of_line = lf
+    indent_size = 2
+    indent_style = space
+    insert_final_newline = true
+    trim_trailing_whitespace = true
+
+    [*.md]
+    trim_trailing_whitespace = false
+
+Наполняем eslintrc:
+
+    {
+      "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+      },
+      "extends": ["eslint:recommended",
+        "plugin:react/recommended"],
+        "parserOptions": {
+          "ecmaFeatures": {
+            "jsx": true
+      },
+          "ecmaVersion": 2018,
+          "sourceType": "module"
+      },
+      "plugins": [
+          "react",
+          "babel"
+      ],
+      "rules": {
+          "no-unused-vars": ["error", { "caughtErrorsIgnorePattern": "^ignore" }],
+          "react/jsx-uses-react": 1,
+          "react/jsx-uses-vars": "error",
+
+          "linebreak-style": [
+          "error",
+          "unix"
+      ],
+          "babel/new-cap": 1,
+          "babel/camelcase": 1,
+          "babel/no-invalid-this": 1,
+          "babel/object-curly-spacing": 1,
+            "babel/semi": 1,
+          "babel/no-unused-expressions": 1,
+          "babel/valid-typeof": 1
+      }
+    }
+
+Наполняем gitattributes:
+
+    * text=auto
+    *.doc     diff=astextplain
+    *.DOC     diff=astextplain
+    *.docx    diff=astextplain
+    *.DOCX    diff=astextplain
+    *.dot     diff=astextplain
+    *.DOT     diff=astextplain
+    *.pdf     diff=astextplain
+    *.PDF     diff=astextplain
+    *.rtf     diff=astextplain
+    *.RTF     diff=astextplain
+    *.md text
+    *.tex text
+    *.adoc text
+    *.textile text
+    *.mustache text
+    *.csv text
+    *.tab text
+    *.tsv text
+    *.sql text
+    *.png binary
+    *.jpg binary
+    *.jpeg binary
+    *.gif binary
+    *.tif binary
+    *.tiff binary
+    *.ico binary
+    *.svg binary
+    #*.svg text
+    *.eps binary
+
+    .gitattributes export-ignore
+    .gitignore export-ignore
+
+Проверяем .gitignore. Этот файл уже должен быть по умолчанию:
+
+    /node_modules
+    /.pnp
+    .pnp.js
+
+    /coverage
+
+    /build
+
+    .DS_Store
+    .env.local
+    .env.development.local
+    .env.test.local
+    .env.production.local
+
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
+
+Для того, чтобы использовать препроцессор, меняем расширение index.css и перемещаем в папку src/assets/sass/index.scss. А для того, чтобы подключить туда же bootstrap, помещаем вверх этого файла:
+
+    @import "~bootstrap/scss/bootstrap";
+
+Удаляем из предустановленного проекта App.css App.test.js logo.svg reportWebVitalis.js. Удаляем сопутствующие импорты.
+
+Настраиваем порт в package.json:
+
+    "start": "set port=3013 && react-scripts start",
+
+Запускаем проект:
+
+    yarn run start
+
+Если проект успешно скомпилировался, создаем репозиторий на gitHub и копируем его на компьютер, введя после нижеприведенной команды адрес, который скопировали из удаленного репозитория:
+
+    git remote add origin
+
+Сохраняем все изменения в удаленный репозиторий на github, привязываясь к нему:
+
+    git add -A
+    git commit -m
+    git push -u origin master
+
+Все последующие изменения можно будет вносить командой:
+
+    git add -A
+    git commit -m
+    git push
+
+## Паттерны и лайфхаки
+
+### Таймер для изменения стейта
   src/components/detail
 
   У нас уже есть стейт, который меняется под действием внешних факторов. Это простое сообщение информирующее о том, что данные на сервере изменились:

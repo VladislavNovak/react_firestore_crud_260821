@@ -1,10 +1,10 @@
 import React from 'react';
 import {Switch, Route, Redirect} from "react-router-dom";
-import {publicRoutes} from '../../utils/routes';
-import {TUTORIALS_ROUTE} from '../../utils/constants';
-import {Navbar} from '..';
+import {publicRoutes} from './utils/routes';
+import {TUTORIALS_ROUTE} from './utils/constants';
+import {Navbar} from './components';
 
-import '../../utils/fontawesome.js';
+import './utils/fontawesome.js';
 
 function App() {
   return (
