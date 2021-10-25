@@ -1,63 +1,57 @@
-Использует **React**, **Firebase**. 
+Использует **React**, **Firestore**. 
 Реализует запросы по принципу **CRUD**. 
+Валидация **PropTypes**. 
 Стилизация **Sass**. 
 
+Реализует функционал записной книжки. 
+Завершенный проект.
+
 -----
+
+![Screenshot](Screenshot_10.png)
 
 - [Маршрутизация](#Маршрутизация)
 - [Препроцессор Sass](#Препроцессор-Sass)
 - [Подключаем fontAwesomeIcon](#Подключаем-fontAwesomeIcon)
-- [Подключаем firestore](#Подключаем-firestore)
-  - [Регистрируем firestore в приложении](#Регистрируем-firestore-в-приложении)
-  - [Объединяем все CRUD операции в одном файле](#Объединяем-все-CRUD-операции-в-одном-файле)
-- [Создаем страничку с функционалом добавления документа](#Создаем-страничку-с-функционалом-добавления-документа)
-  - [Базовая структура для создания документа](#Базовая-структура-для-создания-документа)
-  - [Создаем форму с полями](#Создаем-форму-с-полями)
-  - [Сохраняем новый документ в firestore](#Сохраняем-новый-документ-в-firestore)
-- [Создаем страничку с перечислением коллекции](#Создаем-страничку-с-перечислением-коллекции)
-  - [Получаем данные из firestore](#Получаем-данные-из-firestore)
-  - [Реагируем на выбор конкретного документа](#Реагируем-на-выбор-конкретного-документа)
-- [Заменяем обычное получение данных из firebase на hooks](#Заменяем-обычное-получение-данных-из-firebase-на-hooks)
-  - [Подгоняем jsx под хук](#Подгоняем-jsx-под-хук)
-- [Создаем страничку с документом](#Создаем-страничку-с-документом)
-  - [Передаем пропсы в компонент для отображения в jsx коде](#Передаем-пропсы-в-компонент-для-отображения-в-jsx-коде)
-  - [CRUD](#CRUD)
+- [Подключаем Firestore](#Подключаем-Firestore)
+  - [Добавление данных](#Добавление-данных)
+  - [Извлечение данных](#Извлечение-данных)
+  - [Обновление удаление данных](#Обновление-удаление-данных)
 - [Базовые настройки](#Базовые-настройки)
 - [Паттерны и лайфхаки](#Паттерны-и-лайфхаки)
   - [Таймер для изменения стейта](#Таймер-для-изменения-стейта)
+  - [Массив примитивов в объект](#Массив-примитивов-в-объект)
 
 # Маршрутизация
 
 1. **Создаем страницы**
 
-В проекте будет две страницы, поэтому создаем компоненты, которые будут их представлять: src/pages/ (add-task/AddTask, task-list/TaskList, more/More)
+В проекте будет три страницы. Так как для функционала добавления и извлечения с сервера firebase нас интересует две страницы, акцентируем внимание именно на них. Создаем страницы AddTask и Tasks.
 
 2. **Перечисляем в константах пути к ним:**
 
-src/routes/constants.js
+*src/routes/constants.js*
 
     export const ADD_ROUTE = `/add`;
+    export const TASKS_ROUTE = `/tasks`;
 
 3. **Описываем пути в виде массива объектов:**
 
-src/routes/routes.js
+*src/routes/routes.js*
 
-    import {ADD_ROUTE} from './constants';
-    import AddTask from '../pages/add-task/Add-task';
+    import {TASKS_ROUTE, ADD_ROUTE} from './constants';
+    import {AddTask, Tasks} from '../pages';
 
     export const publicRoutes = [
-      {
-        title: `Add Task`,
-        path: ADD_ROUTE,
-        Component: AddTask
-      },
+      {title: `Add Task`, path: ADD_ROUTE, Component: AddTask }, 
+      {title: `Task List`, path: TASKS_ROUTE, Component: Tasks},
     ];
 
 4. **Создаем компонент отвечающий за навигацию:**
 
 Она позволит перемещаться между страницами при клике по указанному пункту. Используем NavLink. В отличии от простого Link, он позволяет воспользоваться стилизацией для выделения активной ссылки. NavLink включает в себя activeClassName (значение которого просто добавляется к стилизации) и/или activeStyle (используется в качестве встроенной стилизации, например activeStyle={{color: "green", fontWeight: "bold"}})
 
-src/components/navbar/Navbar.jsx
+*src/components/navbar/Navbar.jsx*
 
     import React from 'react';
     import {NavLink} from "react-router-dom";
@@ -86,17 +80,15 @@ src/components/navbar/Navbar.jsx
 
 5. **Подключаем маршрутизацию:**
 
-Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался на TASKLIST_ROUTE:
+Switch итерируется по всем путям и в том случае, если ничего не найдено, возвращает последний маршрут. В нашем случае - Redirect. Это необходимо для того, чтобы пользователь, при неверном наборе пути, возвращался на TASKS_ROUTE:
 
-src/App.js
+*src/App.js*
 
     import React from 'react';
     import {Switch, Route, Redirect} from "react-router-dom";
     import {publicRoutes} from './routes/routes';
-    import {TASKLIST_ROUTE} from './routes/constants';
+    import {TASKS_ROUTE} from './routes/constants';
     import {Navbar} from './components';
-
-    import './utils/fontawesome.js';
 
     function App() {
       return (
@@ -106,7 +98,7 @@ src/App.js
           <div className="container">
             <Switch>
               {publicRoutes.map(({path, Component}) => <Route key={path} path={path} component={Component} exact />)}
-              <Redirect to={TASKLIST_ROUTE} />
+              <Redirect to={TASKS_ROUTE} />
             </Switch>
           </div>
         </div>
@@ -120,7 +112,7 @@ src/App.js
 
 Импортируем BrowserRouter и оборачиваем App. Это позволит воспользоваться маршрутизацией во всем приложении:
 
-src/index
+*src/index*
 
     import {BrowserRouter} from 'react-router-dom';
 
@@ -137,20 +129,20 @@ src/index
 
 1. **Настраиваем файл style:**
 
-Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке add-task будет находится одновременно два файла - add-task/Add-task.jsx и add-task/add-task.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
+Создаем папку sass по адресу src/assets/sass. В этой папке создаем файлы style.scss, fonts.scss, variables.scss, common.scss. Далее, к каждому компоненту в его папке создадим файл с аналогичным наименованием. Т.о, к примеру, в папке add-task будет находится одновременно два файла - add-task/Add-task.jsx и add-task/Add-task.scss. Далее, определим, что главным файлом препроцессора, который мы будем подключать к приложению, будет style.scss, добавив в него импорты:
 
-src/assets/sass/style.scss
+*src/assets/sass/style.scss*
 
     @import "./fonts.scss";
-    @import "./common.scss";
     @import "./variables.scss";
+    @import "./common.scss";
+    @import "./animation.scss";
 
-    @import "../../pages/add-task/Add-task.jsx";
-    @import "../../components/navbar/Navbar.jsx";
+    @import "../../pages/tasks/Tasks.scss";
 
 2. **Подключаем style к приложению:**
 
-src/index.js
+*src/index.js*
 
     import './assets/sass/style.scss';
 
@@ -184,7 +176,7 @@ src/index.js
 
 Поскольку наименования faStar и в стилях regular, и в solid совпадают, мы воспользовались псевдонимами.
 
-src/utils/fontawesome.js
+*src/utils/fontawesome.js*
 
     import {library} from '@fortawesome/fontawesome-svg-core';
 
@@ -201,13 +193,13 @@ src/utils/fontawesome.js
 
 3. **Импортируем иконки в головной компонент:**
 
-src/App.jsx
+*src/App.jsx*
 
     import '../../utils/fontawesome.js';
 
 4. **Используем иконки в компоненте:**
 
-src/pages/more/More.jsx
+*src/pages/more/More.jsx*
 
     import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -222,13 +214,11 @@ src/pages/more/More.jsx
 
     <FontAwesomeIcon icon={faCoffee} />
 
-# FIRESTORE
-
-## Подключаем firestore
+# Подключаем Firestore
 
 1. **Регистрируем firestore в приложении:**
 
-src/utils/firebase.js
+*src/utils/firebase.js*
 
     import firebase from 'firebase/compat/app';
     import 'firebase/compat/firestore';
@@ -251,11 +241,11 @@ src/utils/firebase.js
 
 2. **Объединяем все CRUD операции в одном файле:**
 
-Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения.
+Перечислим все операции, с помощью которых будем взаимодействовать с документами приложения. В данном случае коллекцию назовем как tutorials, но это может быть любое наименование
 
-src/services/firebase.js
+*src/services/crud-operations.js*
 
-    import firebase from "../utils/firebase";
+    import firebase from "./firebase";
 
     const db = firebase.collection(`/tutorials`);
 
@@ -268,268 +258,236 @@ src/services/firebase.js
 
     export default DataService;
 
-## Функционал добавления данных в Firestore
-
-Создаем страничку данные с которой будут отправляться на сервер
+## Добавление данных
 
 1. **Структура данных:**
 
-Предположим, что структура данных, которая будет отправлена на сервер и, соответственно, отрисована в view-компонентах, состоит из наименования и описания (это title и description). Подобная структура будет служить основой для создания полей формы и для тех данных, которые будут заносится в базу firestore. Таким образом, если появится необходимость в изменении проекта, можно просто добавить в массив новое значение.
+Составим структуру данных. Предположим, что для данных нужно лишь два поля: наименование и описание. Пусть это будет массив [`title`, `description`]. Именно такие элементы управления будут отрисованы в AddTask. И именно в них будут передаваться пользовательские данные. Если появится необходимость в добавлении и/или переименовании полей, можно просто добавить в массив новое значение.
 
-src/utils/constants.js
+Итак, на основании массива впоследствии будут созданы:
+ - стейт, в котором будем хранить данные. Для этого, используя конструкцию ...Object.fromEntries, мы можем добавлять в объект любое количество полей (в данном случае title и description)
+ - компоненты Control количество и состав которых будет соответствовать title и description
 
-    export const Controls = [`title`, `description`];
+*src/utils/constants.js*
 
-2. **Создаем форму с полями:**
+    export const InputNamesList = [`title`, `description`];
 
-На основании массива Controls 
- - динамически заполняется initialState 
- - формируется jsx структура. Подобным образом можно создавать форму с любым количеством полей.
+2. **Создаем страничку AddTask:**
 
-src/pages/add-task/Add-task.jsx
+Страница будет содержать форму с компонентами Control. Сами компоненты Control состоят из обычного input + label, которые отрисовываются по данным, приходящим из ранее созданного массива InputNamesList. Данные из компонентов Control будут отправляться на сервер.
 
-    import {Controls} from '../../utils/constants';
+Обратим внимание на DataService, который создали чуть выше и который является оберткой над базой данных firebase и выполняет всю работу по взаимодействию с сервером. В данном случае (DataService.create(data)) → (const create = (data) => db.add(data)) → (const db = firebase.collection(`/tutorials`))
+
+*src/pages/add-task/Add-task.jsx*
+
+    import React, {Fragment, useState} from 'react';
+    import {Control} from '../../components';
+    import DataService from '../../services/crud-operations';
+    import {InputNamesList} from '../../utils/constants';
 
     const AddTask = () => {
 
       const initialState = {
-        ...Object.fromEntries(Controls.map((item) => [item, ``])),
+        ...Object.fromEntries(InputNamesList.map((inputName) => [inputName, ``])),
         published: false,
       };
 
-      const [tutorial, setTutorial] = useState(initialState);
+      const [inputData, setInputData] = useState(initialState);
 
       const handleInputChange = ({target: {name, value}}) => {
-        setTutorial({...tutorial, [name]: value});
+        setInputData({...inputData, [name]: value});
+      };
+
+      const saveInputData = () => {
+        const data = {...inputData, published: false};
+
+        DataService.create(data)
       };
 
       return (
-        <div>{
-          Controls.map((control) => {
-            return (
-              <div key={control} >
-                <label htmlFor={control}>{control}</label>
-                <input
-                  type="text"
-                  name={control}
-                  id={control}
-                  value={tutorial[control]}
-                  onChange={handleInputChange}
-                  className="form-control"
-                  required />
-              </div>
-            );
-          })}
+        <div className="form add-task">
+            <ul>
+              {InputNamesList.map((inputName) => (
+                <Control
+                  key={inputName}
+                  inputName={inputName}
+                  inputData={inputData}
+                  handleInputChange={handleInputChange} />
+              ))}
+            </ul>
+
+            <button onClick={saveInputData}>Save</button>
         </div>
       );
     }
 
     export default AddTask;
 
-### Сохраняем новый документ в firestore
+## Извлечение данных
 
-src/components/tutorial-add
+Создаем страничку Tasks:
 
-  Создаем стейт, который управляет отрисовкой конкретных jsx блоков
+*src/pages/tasks/Tasks.jsx*
 
-    const [submitted, setSubmitted] = useState(false);
+Воспользуемся хуком useCollection, результатом работы которого будет извлечение не только данных с сервера, но и статус состояния, и ошибку, если такая случилась.
 
-  В каждом из блоков, которые будут показываться в зависимости от submitted, создаем свою кнопки. Одна будет служить для создания новой формы (newTutorial), а когда форма создана, для отправки данных на сервер (saveTutorial):
+Основными задачами данной страницы являются
+  - отрисовка списка tasks - это данные приходящие с сервера - функцией renderTaskList
+  - отрисовка данных конкретного выбранного selectTask. За это отвечает компонент Detailed
 
-    import DataService from '../../services/data-service';
+Обратим также внимание на DataService, который извлекает и сортирует данные с сервера (DataService.getAll().orderBy(`title`, `asc`))
 
-    <button onClick={newTutorial} >Add</button>
-    <button onClick={saveTutorial} >Submit</button>
+    import React, {useState} from 'react';
+    import {useCollection} from "react-firebase-hooks/firestore";
+    import DataService from '../../services/crud-operations.js';
+    import {faShare} from '@fortawesome/free-solid-svg-icons';
+    import {Detailed} from '../../components';
 
-    const newTutorial = () => {
-      setTutorial(initialState);
-      setSubmitted(false);
-    };
+    const Tasks = () => {
+      const [selectTask, setSelectTask] = useState(null);
+      const [selectIndex, setSelectIndex] = useState(-1);
 
-    const saveTutorial = () => {
-      const data = {...tutorial, published: false};
-      DataService.create(data).then(() => setSubmitted(true));
-    };
+      const [tasks, loading, error] = useCollection(DataService.getAll().orderBy(`title`, `asc`));
 
-## Создаем страничку с перечислением коллекции
-
-  ### Получаем данные из firestore
-  src/components/tutorial-list
-
-  Помимо jsx кода добавляем стейт tutorials. Он будет содержать всю коллекцию (массив документов) из firestore:
-
-    const [tutorials, setTutorials] = useState([]);
-
-  tutorials обновляется в useEffect. Здесь мы подписываемся на прослушивание события. При заверщении useEffect нужно отписаться от события, чтобы не происходила утечка памяти. Далее - событие onSnapshot реагирует на все изменения в коллекции получаемой с сервера. Когда они происходят, в onDataChange получаем коллекцию, извлекаем документы, перебираем их и сортируем (посредством arrangeObjectProperties; это необязательно, но это лучше для производительности):
-
-    const onDataChange = (snapshot) => {
-      const data = snapshot.docs.map((item) => {
-        const ordered = arrangeObjectProperties(item);
-        return {id: item.id, ...ordered};
-      });
-
-      setTutorials(data);
-    };
-
-    useEffect(() => {
-      const unsubscribe = DataService.getAll().orderBy(`title`, `asc`).onSnapshot(onDataChange);
-      return unsubscribe;
-    }, []);
-
-  ### Реагируем на выбор конкретного документа
-  src/components/tutorial-list
-
-  currentTutorial отвечает за текущий выбранный документ, а currentIndex - за его индекс (это просто позиция документа в коллекции):
-
-    const [currentTutorial, setCurrentTutorial] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(-1);
-
-    const setActiveTutorial = ({id, title, description, published}, index) => {
-      setCurrentTutorial({id, title, description, published});
-      setCurrentIndex(index);
-    };
-
-     <li
-      key={tutorial.id}
-      onClick={() => setActiveTutorial(tutorial, index)}
-      className={`list-group-item ` + (index === currentIndex ? `active` : ``)}>
-      {tutorial.title}
-    </li>
-
-  Теперь, когда данные получены, а документ выбран, в него можно передать информацию для отрисовки и оперирования:
-
-      import Tutorial from '../tutorial/tutorial.jsx';
-
-      const refreshList = () => {
-        setCurrentTutorial(null);
-        setCurrentIndex(-1);
+      const handleClick = (task, index) => {
+        const {title, description, published} = task.data();
+        setSelectTask({id: task.id, title, description, published});
+        setSelectIndex(index);
       };
 
-      const renderIfCurrentTutorialTrue = () => (
-        <Tutorial tutorial={currentTutorial} refreshList={refreshList} />
+      const refreshList = () => {
+        setSelectTask(null);
+        setSelectIndex(-1);
+      };
+
+      const renderTaskList = () => (
+        <ul className="tasks__list">
+          { !loading && tasks && tasks.docs.map((task, index) => (
+            <li
+              key={task.id}
+              onClick={() => handleClick(task, index)}
+              className={`item-like-button tasks__item ` + (index === selectIndex ? `tasks__item--active` : ``)}>
+              {task.data().title}
+            </li>
+          ))}
+        </ul>
       );
 
-## Заменяем обычное получение данных из firebase на hooks
-  src/components/tutorial-list
-
-  Ранее, для получения данных с сервера мы использовали слушатель событий onSnapshot(onDataChange), который помещали в useEffect (это весь код из расположенного выше раздела "Получаем данные из firestore"). Теперь же мы можем удалить весь тот код и заменить его хуком useCollection, который результатом своей работы извлекает не только данные с сервера, но и статус состояния, и ошибку, если такая случилась:
-
-    import {useCollection} from "react-firebase-hooks/firestore";
-
-    const [tutorials, loading, error] = useCollection(DataService.getAll().orderBy(`title`, `asc`));
-
-  ### Подгоняем jsx под хук
-  src/components/tutorial-list
-
-  Добавляем обработку loading, error. И, важно, теперь это не просто данные, а данные.data(). Следовательно, корректируем и метод setActiveTutorial():
-
-    const setActiveTutorial = (tutorial, index) => {
-      const {title, description, published} = tutorial.data();
-      setCurrentTutorial({id: tutorial.id, title, description, published});
-      setCurrentIndex(index);
+      return (
+        <div className="form tasks">
+          <div className="tasks__list-wrap">
+            {error && <strong>Error: {error}</strong>}
+            {tasks && tasks.docs.length && renderTaskList()}
+          </div>
+          {selectTask && <Detailed selectTask={selectTask} refreshList={refreshList} />}
+        </div>
+      );
     };
 
-    <div>
-      {error && <strong>Error: {error}</strong>}
-      {loading && <span>Loading...</span>}
-      <ul className="list-group">
-        { !loading && tutorials && tutorials.docs.map((tutorial, index) => (
-          <li
-            key={tutorial.id}
-            onClick={() => setActiveTutorial(tutorial, index)}
-            className={`list-group-item ` + (index === currentIndex ? `active` : ``)}>
-            {tutorial.data().title}
-          </li>
-        ))}
-      </ul>
-    </div>
+    export default Tasks;
 
-## Создаем страничку с документом
+## Обновление удаление данных
 
-  ### Передаем пропсы в компонент для отображения в jsx коде
-  src/components/tutorial
+Создаем компонент Detailed.
 
-  Ранее в TutorualList мы уже передали в компонент необходимые данные. Теперь же их извлечем:
+Обратим также внимание на 
+ - DataService.update(inputData.id, {published: status})
+ - DataService.update(inputData.id, data)
+ - DataService.remove(inputData.id)
 
-    const Tutorial = ({currentTutorial, refreshList}) => {}
-    export default Tutorial;
+*src/components/detailed/Detailed.jsx*
 
-  Далее - создаем стейт, в котором будем эти данные хранить. Напомню: используя конструкцию ...Object.fromEntries, мы можем добавлять в объект любое количество полей. Так как у нас поля основаны на данных из src/utils/constants, то и полей у нас будет лишь два - title и description:
+    import React, {useState, useEffect} from 'react';
+    import DataService from '../../services/crud-operations';
+    import {InputNamesList} from '../../utils/constants';
+    import {extractProperty, capFirstLetter} from '../../utils/functions';
 
-    const initialState = {
-      id: null,
-      ...Object.fromEntries(Controls.map((item) => [item, ``])),
-      published: false,
+    const Detailed = ({selectTask, refreshList}) => {
+      const initialState = {
+        id: null,
+        ...Object.fromEntries(InputNamesList.map((item) => [item, ``])),
+        published: false,
+      };
+
+      const [inputData, setInputData] = useState(initialState);
+      const [message, setMessage] = useState(``);
+
+      useEffect(() => {
+        if (!message) {
+          return null;
+        }
+
+        let timerId = setTimeout(() => {
+          setMessage(``);
+        }, 5000);
+
+        return () => clearTimeout(timerId);
+      }, [message]);
+
+      if (inputData.id !== selectTask.id) {
+        setInputData(selectTask);
+        setMessage(``);
+      }
+
+      const handleInputChange = ({target: {name, value}}) => {
+        setInputData({...inputData, [name]: value});
+      };
+
+      const updatePublishedStatus = () => {
+        let status = !inputData.published;
+
+        DataService.update(inputData.id, {published: status})
+          .then(() => {
+            setInputData({...inputData, published: status});
+            setMessage(`Was updated succesfully!`);
+          });
+      };
+
+      const updateTask = () => {
+        const data = extractProperty(inputData);
+
+        DataService.update(inputData.id, data)
+          .then(() => {
+            setMessage(`Was updated succesfully!`);
+          });
+      };
+
+      const deleteTask = () => {
+        DataService.remove(inputData.id)
+          .then(refreshList);
+      };
+
+      const renderForm = () => (
+        <div>
+          <form>
+            {
+              InputNamesList.map((inputName) => {
+                return (
+                  <div className="detailed__group" key={inputName} >
+                    <textarea
+                      name={inputName}
+                      id={inputName}
+                      value={inputData[inputName]}
+                      onChange={handleInputChange} />
+                  </div>
+                );
+              })}
+          </form>
+
+          <div className="detailed__buttons">
+            <button onClick={updatePublishedStatus} >updatePublishedStatus</button>
+            <button onClick={deleteTask} >deleteTask</button>
+            <button onClick={updateTask} >updateTask</button>
+          </div>
+        </div>
+      );
+
+      return (inputData && renderForm());
     };
 
-    const [tutorial, setTutorial] = useState(initialState);
+    export default Detailed;
 
-    if (tutorial.id !== currentTutorial.id) {
-      setTutorial(currentTutorial);
-    }
-
-  ### Добавляем элементам формы управляемость
-  src/components/tutorial
-
-  Теперь весь код jsx формируется на основе данных из tutorial. Добавим им взаимодействие:
-
-    const handleInputChange = ({target: {name, value}}) => {
-      setTutorial({...tutorial, [name]: value});
-    };
-
-    <form>
-      {
-        Controls.map((control) => {
-          return (
-            <div key={control} >
-              <label htmlFor={control}>{control}</label>
-              <input
-                type="text"
-                name={control}
-                id={control}
-                value={tutorial[control]}
-                onChange={handleInputChange}
-                className="form-control"
-                required />
-            </div>
-          );
-        })}
-    </form>
-
-  ### CRUD
-  src/components/tutorial
-
-  Создаем кнопки, которые отвечают за обновление конкретного поля, обновление всего документа, удаление документа
-
-    import DataService from '../../services/data-service';
-
-    
-    const updatePublishedStatus = (status) => {
-      DataService.update(tutorial.id, {published: status})
-        .then(setTutorial({...tutorial, published: status}))
-    };
-
-    const updateTutorial = () => {
-      const data = extractProperty(tutorial);
-      DataService.update(tutorial.id, data)
-    };
-
-    const deleteTutorial = () => {
-      DataService.remove(tutorial.id)
-        .then(refreshList)
-    };
-
-    <button
-      className="btn btn-primary m-1"
-      onClick={() =>updatePublishedStatus(!tutorial.published)} >
-      {tutorial.published ? `UnPublish` : `Publish`}
-    </button>
-
-    <button onClick={deleteTutorial} className="btn btn-danger m-1">Delete</button>
-
-    <button onClick={updateTutorial} className="btn btn-success m-1">Update</button>
-
-  На этом основной функционал закончен. Нюансы можно найти в самом проекте
+На этом основной функционал закончен. Нюансы можно найти в самом проекте
 
 ## Базовые настройки
 
@@ -707,13 +665,14 @@ src/components/tutorial-add
 ## Паттерны и лайфхаки
 
 ### Таймер для изменения стейта
-  src/components/detail
 
-  У нас уже есть стейт, который меняется под действием внешних факторов. Это простое сообщение информирующее о том, что данные на сервере изменились:
+src/components/detailed
+
+У нас уже есть стейт, который меняется под действием внешних факторов. Это простое сообщение информирующее о том, что данные на сервере изменились:
 
     const [message, setMessage] = useState(``);
 
-  Теперь сообщение нужно изменить по прошествии времени. Помним, что все асинхронные действия должны происходить в useEffect, а в зависимость, чтобы отслеживать изменения, устанавливаем message. Помещаем в useEffect setTimeout (если речь идет о повторяющихся действиях, то  понадобится setInterval),который возвращает свой id. Он нам понадобится, чтобы при завершении useEffect очистить таймер. И последнее, что нам понадобится, это в начале useEffect отслеживать очищено ли сообщение, так как если оно пустое, небходитости в процессе никакого нет:
+Теперь сообщение нужно изменить по прошествии времени. Помним, что все асинхронные действия должны происходить в useEffect, а в зависимость, чтобы отслеживать изменения, устанавливаем message. Помещаем в useEffect setTimeout (если речь идет о повторяющихся действиях, то  понадобится setInterval),который возвращает свой id. Он нам понадобится, чтобы при завершении useEffect очистить таймер. И последнее, что нам понадобится, это в начале useEffect отслеживать очищено ли сообщение, так как если оно пустое, небходитости в процессе никакого нет:
 
     useEffect(() => {
       if (!message) {
@@ -727,3 +686,16 @@ src/components/tutorial-add
       // eslint-disable-next-line consistent-return
       return () => clearTimeout(timerId);
     }, [message]);
+
+  ### Массив примитивов в объект
+
+  Трансформировать массив примитивов в поля объекта типа {имя: значение}
+
+    const InputNamesList = [`title`, `description`];
+
+    const initialState = {
+      ...Object.fromEntries(InputNamesList.map((inputName) => [inputName, ``])),
+      published: false,
+    };
+
+    // {description: "", published: false, title: ""}

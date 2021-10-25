@@ -1,4 +1,4 @@
-.detail {
+.detailed {
   position: absolute;
   top: -15px;
   right: 0;
@@ -16,7 +16,7 @@
   }
 }
 
-.detail__title {
+.detailed__title {
   text-align: center;
 
   & span {
@@ -26,12 +26,12 @@
   }
 }
 
-.detail__group {
+.detailed__group {
   display: flex;
   flex-direction: column;
 }
 
-.detail__label {
+.detailed__label {
   text-align: left;
   font-size: 1em;
   font-weight: bold;
@@ -41,7 +41,7 @@
   }
 }
 
-.detail__textarea {
+.detailed__textarea {
   display: block;
   resize: none;
 
@@ -63,7 +63,7 @@
   }
 }
 
-.detail__distinguish-label {
+.detailed__distinguish-label {
   display: flex;
   align-items: center;
 
@@ -82,7 +82,7 @@
   }
 }
 
-.detail__distinguish-icon {
+.detailed__distinguish-icon {
   margin-right: auto;
 
   font-size: 1.3em;
@@ -93,11 +93,11 @@
   }
 }
 
-.detail__buttons {
+.detailed__buttons {
   display: flex;
   justify-content: space-between;
 
-  &-btns {
+  & button {
     min-width: 4em;
     padding: 7px;
   }
@@ -105,11 +105,11 @@
 
 @media screen and (max-width: 768px){
 
-  .detail {
+  .detailed {
     transform: translate(25%, 25%);
   }
 
-  .detail__buttons-btns {
+  .detailed__buttons-btns {
     min-width: 3em;
     font-size: 1em;
   }

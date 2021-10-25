@@ -1,7 +1,5 @@
-import {TASKLIST_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
-import AddTask from '../pages/add-task/Add-task';
-import More from '../pages/more/More';
-import TaskList from '../pages/task-list/Task-list';
+import {TASKS_ROUTE, ADD_ROUTE, MORE_ROUTE} from './constants';
+import {AddTask, More, Tasks} from '../pages';
 
 export const publicRoutes = [
   {
@@ -11,8 +9,8 @@ export const publicRoutes = [
   },
   {
     title: `Task List`,
-    path: TASKLIST_ROUTE,
-    Component: TaskList
+    path: TASKS_ROUTE,
+    Component: Tasks
   },
   {
     title: `More`,

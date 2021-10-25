@@ -1,25 +1,25 @@
 /* eslint-disable no-console */
-import React, {useState} from 'react';
-import {EnterGroup} from '../../components';
-import DataService from '../../services/data-service';
-import {Controls} from '../../utils/constants';
+import React, {Fragment, useState} from 'react';
+import {Control} from '../../components';
+import DataService from '../../services/crud-operations';
+import {InputNamesList} from '../../utils/constants';
 
 const AddTask = () => {
 
   const initialState = {
-    ...Object.fromEntries(Controls.map((item) => [item, ``])),
+    ...Object.fromEntries(InputNamesList.map((inputName) => [inputName, ``])),
     published: false,
   };
 
   const [submitted, setSubmitted] = useState(false);
-  const [tutorial, setTutorial] = useState(initialState);
+  const [inputData, setInputData] = useState(initialState);
 
   const handleInputChange = ({target: {name, value}}) => {
-    setTutorial({...tutorial, [name]: value});
+    setInputData({...inputData, [name]: value});
   };
 
-  const saveTutorial = () => {
-    const data = {...tutorial, published: false};
+  const saveInputData = () => {
+    const data = {...inputData, published: false};
 
     DataService.create(data)
     .then(() => {
@@ -31,35 +31,37 @@ const AddTask = () => {
     });
   };
 
-  const newTutorial = () => {
-    setTutorial(initialState);
+  const newInputData = () => {
+    setInputData(initialState);
     setSubmitted(false);
   };
 
   const renderIfSubmittedTrue = () => (
     <div className="add-task__warning">
       <p>The task was <span>successfully saved</span> on the server!</p>
-      <button onClick={newTutorial} className="add-task__btns">Create next</button>
+      <button onClick={newInputData} className="add-task__btns">Create next</button>
     </div>
   );
 
   const renderIfSubmittedFalse = () => (
-    <div>
-      {Controls.map((control) => (
-        <EnterGroup
-          key={control}
-          control={control}
-          tutorial={tutorial}
-          handleInputChange={handleInputChange} />
-      ))}
+    <Fragment>
+      <ul>
+        {InputNamesList.map((inputName) => (
+          <Control
+            key={inputName}
+            inputName={inputName}
+            inputData={inputData}
+            handleInputChange={handleInputChange} />
+        ))}
+      </ul>
 
       <button
-        onClick={saveTutorial}
-        disabled={!tutorial.title && !tutorial.description}
+        onClick={saveInputData}
+        disabled={!inputData.title && !inputData.description}
         className="add-task__btns">
           Save
       </button>
-    </div>
+    </Fragment>
   );
 
   return (

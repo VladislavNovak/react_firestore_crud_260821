@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {capFirstLetter} from '../../utils/functions';
 
-// ---------------------------------------------------------------
-
-const EnterGroup = ({control, tutorial, handleInputChange}) => {
+const Control = ({inputName, inputData, handleInputChange}) => {
   const [isFocus, setFocus] = useState(false);
 
   const handleInputFocus = ({target}, status) => {
@@ -15,26 +13,26 @@ const EnterGroup = ({control, tutorial, handleInputChange}) => {
   };
 
   return (
-    <div className="enter-group" key={control} >
-      <label className={isFocus ? `enter-group__label active` : `enter-group__label`} htmlFor={control}>{capFirstLetter(control)}</label>
+    <li className="control" key={inputName} >
+      <label className={isFocus ? `control__label active` : `control__label`} htmlFor={inputName}>{capFirstLetter(inputName)}</label>
       <input
         type="text"
-        name={control}
-        id={control}
-        value={tutorial[control]}
+        name={inputName}
+        id={inputName}
+        value={inputData[inputName]}
         onChange={handleInputChange}
         onFocus={(evt) => handleInputFocus(evt, true)}
         onBlur={(evt) => handleInputFocus(evt, false)}
-        className="enter-group__control"
+        className="control__control"
         autoComplete="off"
         required />
-    </div>
+    </li>
   );
 };
 
-EnterGroup.propTypes = {
-  control: PropTypes.string.isRequired,
-  tutorial: PropTypes.shape({
+Control.propTypes = {
+  inputName: PropTypes.string.isRequired,
+  inputData: PropTypes.shape({
     description: PropTypes.string.isRequired,
     published: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -42,4 +40,4 @@ EnterGroup.propTypes = {
   handleInputChange: PropTypes.func.isRequired
 };
 
-export default EnterGroup;
+export default Control;

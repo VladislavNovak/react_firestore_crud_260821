@@ -1,8 +1,8 @@
-.enter-group {
+.control {
   position: relative;
 }
 
-.enter-group__label {
+.control__label {
   position: absolute;
   top: 0.3em;
   left: 1em;
@@ -21,7 +21,7 @@
   }
 }
 
-.enter-group__control {
+.control__control {
   width: 92%;
   height: 1.5em;
   margin-bottom: 2.2em;
